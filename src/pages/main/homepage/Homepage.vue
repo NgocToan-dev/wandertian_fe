@@ -97,30 +97,18 @@
 </template>
 
 <script setup>
-import { getCurrentInstance } from "vue";
+import { getCurrentInstance, onMounted, ref } from "vue";
+import searchApi from "../../../apis/businessApi/searchApi";
 
 const { proxy } = getCurrentInstance();
+const listNews = ref([]);
 // fake data news for card
-const listNews = [
-  {
-    title: "News 1",
-    description: "Description 1",
-    image: "https://via.placeholder.com/300",
-    link: "#",
-  },
-  {
-    title: "News 2",
-    description: "Description 2",
-    image: "https://via.placeholder.com/300",
-    link: "#",
-  },
-  {
-    title: "News 3",
-    description: "Description 3",
-    image: "https://via.placeholder.com/300",
-    link: "#",
-  },
-];
+onMounted(async () => {
+  const res = await searchApi.get();
+  if (res) {
+    listNews.value = res;
+  }
+});
 // fake category
 const listCategory = [
   "Travel",
