@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-12 col-md-8">
           <div v-for="(news, index) in listNews" :key="news.title" class="mb-4">
-            <Card :title="news.title" :description="news.description" />
+            <Card :post="news" @readMore="readMore" />
           </div>
           <!-- Card Pagination -->
           <div class="d-flex justify-content-start mt-3 flex-row gap-2">
@@ -123,6 +123,9 @@ const listCategory = [
 
 const searchPost = (category) => {
   proxy.$router.push({ name: "Search", params: { search: category } });
+};
+const readMore = (id) => {
+  proxy.$router.push({ name: "PostDetail", params: { id } });
 };
 </script>
 

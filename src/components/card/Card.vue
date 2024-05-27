@@ -2,11 +2,11 @@
   <div class="card">
     <img src="https://placehold.co/100" class="card-img-top" alt="..." />
     <div class="card-body">
-      <h5 class="card-title">{{ title }}</h5>
+      <h5 class="card-title">{{ post.title }}</h5>
       <p class="card-text">
-        {{ description }}
+        {{ post.description }}
       </p>
-      <a href="#" class="btn btn-primary" @click="readMore">READ MORE</a>
+      <a class="btn btn-primary" @click="readMore">READ MORE</a>
     </div>
   </div>
 </template>
@@ -17,15 +17,12 @@ import { getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
 // init props
 const props = defineProps({
-  id: String,
-  title: String,
-  description: String,
-  image: String,
-  link: String,
+  post: Object,
 });
 // read more function
-const readMore = () => {
-  proxy.$emit("readMore", props.link);
+const readMore = (e) => {
+  e.preventDefault();
+  proxy.$emit("readMore", props.post._id);
 };
 </script>
 

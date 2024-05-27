@@ -2,15 +2,22 @@
   <div class="post-detail">
     <div class="post-detail-header">
       <h1>{{ post.title }}</h1>
-      <p>{{ post.createdAt }}</p>
+      <p>{{ post.description }}</p>
     </div>
-    <div class="post-detail-body" v-html="post.body" />
   </div>
 </template>
 
 <script setup>
-const props = defineProps({
-  post: Object,
+import { getCurrentInstance, onMounted, ref } from "vue";
+import blogApi from "@/apis/businessApi/blogApi";
+
+const { proxy } = getCurrentInstance();
+
+const post = ref({});
+onMounted(async () => {
+  blogApi.getById(proxy.$route.params.id).then((res) => {
+    post.value = res;
+  });
 });
 </script>
 

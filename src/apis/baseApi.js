@@ -5,6 +5,9 @@ class BaseApi {
   apiName = "";
   controller = "";
 
+  getApiUrl() {
+    return [httpConfig[this.apiName], this.controller].join("/");
+  }
   async get() {
     const request = {
       url: this.getApiUrl(),
@@ -13,9 +16,13 @@ class BaseApi {
     const response = await axios.get(request.url);
     return response.data;
   }
+  async getById(id) {
+    const request = {
+      url: [this.getApiUrl(), id].join("/"),
+    };
 
-  getApiUrl() {
-    return [httpConfig[this.apiName], this.controller].join("/");
+    const response = await axios.get(request.url);
+    return response.data;
   }
 }
 
