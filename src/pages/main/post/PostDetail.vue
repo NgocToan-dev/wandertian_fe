@@ -1,52 +1,91 @@
 <template>
   <div class="container h-100 flex-column d-flex">
+    <div
+      class="mb-2 d-flex flex-row justify-content-between align-items-center"
+    >
+      <div>
+        <button
+          v-if="!isPreview"
+          @click="saveDraft"
+          class="btn btn-primary me-2"
+        >
+          Save
+        </button>
+      </div>
+      <div
+        v-if="isPreview"
+        @click="openEdit"
+        class="d-flex align-items-center h-100"
+      >
+        <!-- icon edit -->
+        <i class="fas fa-edit fa-xl"></i>
+      </div>
+    </div>
+    <!-- Title and description -->
     <div class="mb-2">
-      <button @click="saveDraft" class="btn btn-primary me-2">Save</button>
-      <button @click="preview" class="btn btn-light">Preview</button>
+      <!-- div contenteditable  -->
+      <h2
+        :contenteditable="!isPreview"
+        @input="({ target }) => (post.title = target.textContent)"
+      >
+        {{ post.title }}
+      </h2>
+
+      <div
+        class="mt-2"
+        :contenteditable="!isPreview"
+        @input="({ target }) => (post.description = target.textContent)"
+      >
+        {{ post.description }}
+      </div>
     </div>
-    <div v-show="!isPreview">
-      <QuillEditor ref="quillEditor" toolbar="essential" />
-    </div>
-    <div v-show="isPreview">
+    <div v-if="!isPreview">
       <QuillEditor
-        ref="quillEditorPreview"
-        toolbar="essential"
-        :theme="'bubble'"
+        toolbar="full"
+        v-model:content="post.contents"
+        content-type="html"
+      />
+    </div>
+    <div v-else>
+      <QuillEditor
+        theme="bubble"
         readOnly
+        v-model:content="post.contents"
+        content-type="html"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import { getCurrentInstance, onMounted, ref } from "vue";
+import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 import blogApi from "@/apis/businessApi/blogApi";
+import commonFn from "@/utilities/commonFn";
 
 const { proxy } = getCurrentInstance();
 const isPreview = ref(false);
-const post = ref({});
+const post = reactive({});
 onMounted(async () => {
-  blogApi.getById(proxy.$route.params.id).then((res) => {
-    post.value = res;
-    setContentEditor(JSON.parse(post.value.contents));
-  });
+  const res = await blogApi.getById(proxy.$route.params.id);
+  Object.assign(post, res);
 });
-const setContentEditor = (content) => {
-  proxy.$refs.quillEditor.setContents(content);
-  proxy.$refs.quillEditorPreview.setContents(content);
+
+const saveDraft = async () => {
+  let mask = commonFn.showMask();
+  blogApi
+    .update(post.blog_id, {
+      title: post.title,
+      description: post.description,
+      contents: post.contents,
+    })
+    .then(() => {
+      isPreview.value = true;
+      commonFn.hideMask(mask);
+    });
 };
-const saveDraft = () => {
-  const contents = proxy.$refs.quillEditor.getContents();
-  blogApi.update(post.value.blog_id, { contents: JSON.stringify(contents) });
-};
-const preview = () => {
-  setContentEditor(proxy.$refs.quillEditor.getContents());
-  isPreview.value = !isPreview.value;
+const openEdit = () => {
+  isPreview.value = false;
 };
 </script>
 
-<style lang="scss" scoped>
-:deep(.ql-container) {
-  flex-grow: 1;
-}
-</style>
+<style lang="scss" scoped></style>
