@@ -1,9 +1,20 @@
 <template>
   <div class="container h-100 flex-column d-flex">
-    <div>
-      <button @click="saveDraft" class="btn btn-primary mb-2">Save</button>
+    <div class="mb-2">
+      <button @click="saveDraft" class="btn btn-primary me-2">Save</button>
+      <button @click="preview" class="btn btn-light">Preview</button>
     </div>
-    <QuillEditor ref="quillEditor" toolbar="essential" />
+    <div v-show="!isPreview">
+      <QuillEditor ref="quillEditor" toolbar="essential" />
+    </div>
+    <div v-show="isPreview">
+      <QuillEditor
+        ref="quillEditorPreview"
+        toolbar="essential"
+        :theme="'bubble'"
+        readOnly
+      />
+    </div>
   </div>
 </template>
 
@@ -12,18 +23,25 @@ import { getCurrentInstance, onMounted, ref } from "vue";
 import blogApi from "@/apis/businessApi/blogApi";
 
 const { proxy } = getCurrentInstance();
-
+const isPreview = ref(false);
 const post = ref({});
 onMounted(async () => {
   blogApi.getById(proxy.$route.params.id).then((res) => {
     post.value = res;
-    proxy.$refs.quillEditor.setContents(JSON.parse(post.value.description));
+    setContentEditor(JSON.parse(post.value.contents));
   });
 });
-
+const setContentEditor = (content) => {
+  proxy.$refs.quillEditor.setContents(content);
+  proxy.$refs.quillEditorPreview.setContents(content);
+};
 const saveDraft = () => {
-  const description = proxy.$refs.quillEditor.getContents();
-  blogApi.update(post.value.blog_id, { description: JSON.stringify(description) });
+  const contents = proxy.$refs.quillEditor.getContents();
+  blogApi.update(post.value.blog_id, { contents: JSON.stringify(contents) });
+};
+const preview = () => {
+  setContentEditor(proxy.$refs.quillEditor.getContents());
+  isPreview.value = !isPreview.value;
 };
 </script>
 
