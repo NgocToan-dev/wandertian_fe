@@ -24,6 +24,16 @@ class BaseApi {
     const response = await axios.get(request.url);
     return response.data;
   }
+
+  async update(id, data) {
+    const request = {
+      url: [this.getApiUrl(), id].join("/"),
+      data,
+    };
+
+    const response = await axios.put(request.url, request.data);
+    return response.data;
+  }
 }
 
 export default BaseApi;

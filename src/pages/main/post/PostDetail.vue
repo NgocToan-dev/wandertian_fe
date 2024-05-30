@@ -1,9 +1,9 @@
 <template>
-  <div class="post-detail">
-    <div class="post-detail-header">
-      <h1>{{ post.title }}</h1>
-      <p>{{ post.description }}</p>
+  <div class="container h-100 flex-column d-flex">
+    <div>
+      <button @click="saveDraft" class="btn btn-primary mb-2">Save</button>
     </div>
+    <QuillEditor ref="quillEditor" toolbar="essential" />
   </div>
 </template>
 
@@ -17,8 +17,18 @@ const post = ref({});
 onMounted(async () => {
   blogApi.getById(proxy.$route.params.id).then((res) => {
     post.value = res;
+    proxy.$refs.quillEditor.setContents(JSON.parse(post.value.description));
   });
 });
+
+const saveDraft = () => {
+  const description = proxy.$refs.quillEditor.getContents();
+  blogApi.update(post.value.blog_id, { description: JSON.stringify(description) });
+};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.ql-container) {
+  flex-grow: 1;
+}
+</style>
