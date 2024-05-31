@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
-import BaseStore from "./_baseStore";
 import categoryApi from "../../apis/business/categoryApi";
+import BaseDictionaryStore from "./_baseDictionaryStore";
 
-const categoryStore = new BaseStore(categoryApi);
+const categoryStore = new BaseDictionaryStore(categoryApi);
 
 export const useCategoryStore = defineStore("categoryStore", {
-  state: () => ({ ...categoryStore.state }),
+  state: () => ({ ...categoryStore.state, module: "category" }),
   getters: {
     ...categoryStore.getters,
   },

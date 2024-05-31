@@ -1,7 +1,7 @@
 <template>
   <!-- Chip -->
   <!-- Small font-size -->
-  <div class="chip bg-primary text-white px-2 py-1 rounded me-2 mb-2" >
+  <div class="cursor-pointer btn btn-outline-primary btn-sm px-2 py-1 rounded me-2 mb-2" >
     {{ text }}
   </div>
 </template>
@@ -13,7 +13,4 @@ const props = defineProps({
 </script>
 
 <style lang="scss" scoped>
-.chip {
-  cursor: pointer;
-}
 </style>

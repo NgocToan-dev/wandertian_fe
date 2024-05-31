@@ -1,6 +1,6 @@
-/** * @file PostDetail.vue * @description A Vue component for displaying and editing a
-post detail. * @module components/PostDetail */ /** * Vue component for displaying and
-editing a post detail. * * @template * @component */
+/** * @file PostDetail.vue * @description A Vue component for displaying and
+editing a post detail. * @module components/PostDetail */ /** * Vue component
+for displaying and editing a post detail. * * @template * @component */
 <template>
   <div class="container d-flex flex-row-reverse gap-3">
     <!-- Properties section -->
@@ -10,10 +10,10 @@ editing a post detail. * * @template * @component */
         <h3>Category</h3>
         <Combobox
           v-model="post.category"
-          :data="categories"
-          :columns="categoryColumns"
-          key="category_id"
-          displayField="category_name"
+          :data="cacheCategoryCombo.data"
+          :columns="cacheCategoryCombo.columns"
+          :key="cacheCategoryCombo.key"
+          :displayField="cacheCategoryCombo.displayField"
         />
       </div>
       <!-- List Tag -->
@@ -22,10 +22,10 @@ editing a post detail. * * @template * @component */
         <!-- list tag chip -->
         <Combobox
           v-model="post.tag"
-          :data="categories"
-          :columns="categoryColumns"
-          key="category_id"
-          displayField="category_name"
+          :data="cacheCategoryCombo.data"
+          :columns="cacheCategoryCombo.columns"
+          :key="cacheCategoryCombo.key"
+          :displayField="cacheCategoryCombo.displayField"
         />
       </div>
     </div>
@@ -35,7 +35,11 @@ editing a post detail. * * @template * @component */
         class="post-section mb-2 d-flex flex-row justify-content-between align-items-center"
       >
         <div>
-          <button v-if="!isPreview" @click="saveDraft" class="btn btn-primary me-2">
+          <button
+            v-if="!isPreview"
+            @click="saveDraft"
+            class="btn btn-primary me-2"
+          >
             Save
           </button>
           <!-- Cancel button -->
@@ -79,7 +83,11 @@ editing a post detail. * * @template * @component */
 
       <!-- Quill editor for content -->
       <div v-if="!isPreview">
-        <QuillEditor toolbar="full" v-model:content="post.contents" content-type="html" />
+        <QuillEditor
+          toolbar="full"
+          v-model:content="post.contents"
+          content-type="html"
+        />
       </div>
       <div v-else>
         <QuillEditor
@@ -96,18 +104,12 @@ editing a post detail. * * @template * @component */
 <script setup>
 import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 import blogApi from "@/apis/business/blogApi";
-import commonFn from "@/utilities/commonFn";
-import categoryApi from "../../../apis/business/categoryApi";
+import { useCacheCategoryCombo } from "../../../utilities/cache/cacheCategoryCombo";
 
 const { proxy } = getCurrentInstance();
 const isPreview = ref(true);
 const post = reactive({});
-const categories = ref([]);
-const categoryColumns = ref([
-  { dataField: "category_id", label: "ID" },
-  { dataField: "category_name", label: "Name" },
-  // Add more columns here
-]);
+const { cacheCategoryCombo } = useCacheCategoryCombo();
 
 /**
  * Lifecycle hook that fetches the post data when the component is mounted.
@@ -115,8 +117,6 @@ const categoryColumns = ref([
 onMounted(async () => {
   const res = await blogApi.getById(proxy.$route.params.id);
   Object.assign(post, res);
-  const category = await categoryApi.get();
-  categories.value = category;
 });
 
 /**
@@ -124,7 +124,6 @@ onMounted(async () => {
  * @async
  */
 const saveDraft = async () => {
-  let mask = commonFn.showMask();
   blogApi
     .update(post._id, {
       title: post.title,
@@ -135,7 +134,6 @@ const saveDraft = async () => {
     })
     .then(() => {
       isPreview.value = true;
-      commonFn.hideMask(mask);
     });
 };
 

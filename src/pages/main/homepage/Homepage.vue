@@ -104,7 +104,7 @@ const { proxy } = getCurrentInstance();
 const listNews = ref([]);
 // fake data news for card
 onMounted(async () => {
-  const res = await blogApi.get();
+  const res = await blogApi.getAll();
   if (res) {
     listNews.value = res;
   }

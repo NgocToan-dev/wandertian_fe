@@ -1,5 +1,5 @@
 import httpConfig from "./httpConfig";
-import axios from "axios";
+import httpClient from "./httpClient";
 
 class BaseApi {
   apiName = "";
@@ -8,12 +8,12 @@ class BaseApi {
   getApiUrl() {
     return [httpConfig[this.apiName], this.controller].join("/");
   }
-  async get() {
+  async getAll() {
     const request = {
       url: this.getApiUrl(),
     };
 
-    const response = await axios.get(request.url);
+    const response = await httpClient.get(request);
     return response.data;
   }
   async getById(id) {
@@ -21,7 +21,7 @@ class BaseApi {
       url: [this.getApiUrl(), id].join("/"),
     };
 
-    const response = await axios.get(request.url);
+    const response = await httpClient.get(request);
     return response.data;
   }
 
@@ -31,7 +31,7 @@ class BaseApi {
       data,
     };
 
-    const response = await axios.put(request.url, request.data);
+    const response = await httpClient.put(request);
     return response.data;
   }
 }
