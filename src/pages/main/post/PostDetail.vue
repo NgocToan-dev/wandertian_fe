@@ -1,6 +1,6 @@
-/** * @file PostDetail.vue * @description A Vue component for displaying and
-editing a post detail. * @module components/PostDetail */ /** * Vue component
-for displaying and editing a post detail. * * @template * @component */
+/** * @file PostDetail.vue * @description A Vue component for displaying and editing a
+post detail. * @module components/PostDetail */ /** * Vue component for displaying and
+editing a post detail. * * @template * @component */
 <template>
   <div class="container d-flex flex-row-reverse gap-3">
     <!-- Properties section -->
@@ -12,8 +12,8 @@ for displaying and editing a post detail. * * @template * @component */
           v-model="post.category"
           :data="categories"
           :columns="categoryColumns"
-          key="id"
-          displayField="name"
+          key="category_id"
+          displayField="category_name"
         />
       </div>
       <!-- List Tag -->
@@ -24,8 +24,8 @@ for displaying and editing a post detail. * * @template * @component */
           v-model="post.tag"
           :data="categories"
           :columns="categoryColumns"
-          key="id"
-          displayField="name"
+          key="category_id"
+          displayField="category_name"
         />
       </div>
     </div>
@@ -35,11 +35,7 @@ for displaying and editing a post detail. * * @template * @component */
         class="post-section mb-2 d-flex flex-row justify-content-between align-items-center"
       >
         <div>
-          <button
-            v-if="!isPreview"
-            @click="saveDraft"
-            class="btn btn-primary me-2"
-          >
+          <button v-if="!isPreview" @click="saveDraft" class="btn btn-primary me-2">
             Save
           </button>
           <!-- Cancel button -->
@@ -54,10 +50,10 @@ for displaying and editing a post detail. * * @template * @component */
         <div
           v-if="isPreview"
           @click="openEdit"
-          class="d-flex align-items-center h-100"
+          class="cursor-pointer d-flex align-items-center h-100"
         >
           <!-- Edit icon -->
-          <i class="fas fa-edit fa-xl"></i>
+          <i class="fas fa-edit fa-xl text-primary"></i>
         </div>
       </div>
 
@@ -83,11 +79,7 @@ for displaying and editing a post detail. * * @template * @component */
 
       <!-- Quill editor for content -->
       <div v-if="!isPreview">
-        <QuillEditor
-          toolbar="full"
-          v-model:content="post.contents"
-          content-type="html"
-        />
+        <QuillEditor toolbar="full" v-model:content="post.contents" content-type="html" />
       </div>
       <div v-else>
         <QuillEditor
@@ -103,21 +95,17 @@ for displaying and editing a post detail. * * @template * @component */
 
 <script setup>
 import { getCurrentInstance, onMounted, reactive, ref } from "vue";
-import blogApi from "@/apis/businessApi/blogApi";
+import blogApi from "@/apis/business/blogApi";
 import commonFn from "@/utilities/commonFn";
+import categoryApi from "../../../apis/business/categoryApi";
 
 const { proxy } = getCurrentInstance();
 const isPreview = ref(true);
 const post = reactive({});
-const categories = ref([
-  { id: 1, name: "Option 1", value: "Value 1" },
-  { id: 2, name: "Option 2", value: "Value 2" },
-  { id: 3, name: "Option 3", value: "Value 3" },
-  // Add more options here
-]);
+const categories = ref([]);
 const categoryColumns = ref([
-  { dataField: "name", label: "Name" },
-  { dataField: "value", label: "Value" },
+  { dataField: "category_id", label: "ID" },
+  { dataField: "category_name", label: "Name" },
   // Add more columns here
 ]);
 
@@ -127,6 +115,8 @@ const categoryColumns = ref([
 onMounted(async () => {
   const res = await blogApi.getById(proxy.$route.params.id);
   Object.assign(post, res);
+  const category = await categoryApi.get();
+  categories.value = category;
 });
 
 /**
@@ -136,7 +126,7 @@ onMounted(async () => {
 const saveDraft = async () => {
   let mask = commonFn.showMask();
   blogApi
-    .update(post.blog_id, {
+    .update(post._id, {
       title: post.title,
       description: post.description,
       contents: post.contents,
@@ -158,4 +148,8 @@ const openEdit = () => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.post-section {
+  height: 40px;
+}
+</style>

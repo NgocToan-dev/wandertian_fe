@@ -98,13 +98,13 @@
 
 <script setup>
 import { getCurrentInstance, onMounted, ref } from "vue";
-import searchApi from "../../../apis/businessApi/searchApi";
+import blogApi from "@/apis/business/blogApi";
 
 const { proxy } = getCurrentInstance();
 const listNews = ref([]);
 // fake data news for card
 onMounted(async () => {
-  const res = await searchApi.get();
+  const res = await blogApi.get();
   if (res) {
     listNews.value = res;
   }

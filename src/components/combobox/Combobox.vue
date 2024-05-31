@@ -49,10 +49,10 @@ const filteredData = computed(() => {
   if (props.data) {
     return props.data.filter((option) => {
       let filterValue = searchText.value;
-      if(!filterValue){
-        filterValue = '';
+      if (!filterValue) {
+        filterValue = "";
       }
-      return option.name.toLowerCase().includes(filterValue.toLowerCase());
+      return option[props.displayField].toLowerCase().includes(filterValue.toLowerCase());
     });
   }
   return [];
