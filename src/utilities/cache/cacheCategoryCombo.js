@@ -14,7 +14,7 @@ export const useCacheCategoryCombo = () => {
       { dataField: "category_name", label: "Name" },
       // Add more columns here
     ],
-    key: "category_id",
+    key: "_id",
     displayField: "category_name",
   };
 

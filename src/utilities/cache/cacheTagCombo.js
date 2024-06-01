@@ -1,5 +1,5 @@
 import { computed, reactive } from "vue";
-import { useTagStore } from "../../store/dictionary/categoryStore";
+import { useTagStore } from "../../store/dictionary/tagStore";
 
 export const useCacheTagCombo = () => {
   const store = useTagStore();
@@ -9,9 +9,7 @@ export const useCacheTagCombo = () => {
   });
 
   const configDefault = {
-    columns: [
-      { dataField: "tag_name", label: "Name" },
-    ],
+    columns: [{ dataField: "tag_name", label: "Name" }],
     key: "_id",
     displayField: "tag_name",
   };

@@ -1,20 +1,30 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import Homepage from "@/pages/main/homepage/Homepage.vue";
-import About from "@/pages/main/about/About.vue";
-import Contact from "@/pages/main/contact/Contact.vue";
-import SearchPost from "@/pages/main/search/SearchPost.vue";
-
 const routes = [
   {
     path: "/",
-    component: Homepage,
+    component: () => import("@/pages/main/homepage/Homepage.vue"),
   },
-
-  { name: "About", path: "/about", component: About },
-  { name: "Contact", path: "/contact", component: Contact },
+  {
+    path: "/404",
+    component: () => import("@/pages/main/NotFound.vue"),
+  },
+  {
+    name: "About",
+    path: "/about",
+    component: () => import("@/pages/main/about/About.vue"),
+  },
+  {
+    name: "Contact",
+    path: "/contact",
+    component: () => import("@/pages/main/contact/Contact.vue"),
+  },
   // Search result
-  { name: "Search", path: "/search/:search", component: SearchPost },
+  {
+    name: "Search",
+    path: "/search/:search",
+    component: () => import("@/pages/main/search/SearchPost.vue"),
+  },
   {
     name: "PostDetail",
     path: "/post/:id",
@@ -22,8 +32,13 @@ const routes = [
   },
   {
     name: "PostEditor",
-    path: "/post/editor/:id",
+    path: "/post/:id/edit",
     component: () => import("@/pages/main/post/PostEditor.vue"),
+  },
+  // redirect to 404 page
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: "/404",
   },
 ];
 

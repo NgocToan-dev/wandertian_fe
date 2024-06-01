@@ -1,9 +1,9 @@
 <template>
-    <main class="d-flex flex-column justify-content-between">
-      <Header class="mb-4" />
-      <RouterView class="flex-grow-1" />
-      <Footer class="mt-4" />
-    </main>
+  <main class="d-flex flex-column justify-content-between">
+    <Header />
+    <RouterView class="flex-grow-1 mt-5" />
+    <Footer />
+  </main>
 </template>
 
 <script setup>

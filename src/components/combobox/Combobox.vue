@@ -3,7 +3,7 @@
     <input
       class="w-100 form-control"
       type="text"
-      v-model="searchText"
+      :value="internalText"
       @input="filterOptions"
       placeholder="Search..."
       data-bs-toggle="dropdown"
@@ -16,14 +16,14 @@
         aria-labelledby="dropdownMenuButton"
       >
         <div class="row border-bottom">
-          <div class="col" v-for="column in columns" :key="column.key">
+          <div class="col" v-for="column in columns" :key="column.valueField">
             <strong>{{ column.label }}</strong>
           </div>
         </div>
         <div
           class="row"
-          v-for="item in filteredData"
-          :key="item[key]"
+          v-for="item in data"
+          :key="item[valueField]"
           @click="chooseValue(item)"
         >
           <div class="col" v-for="(column, index) in columns" :key="index">
@@ -36,32 +36,32 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
-const searchText = defineModel();
+const internalText = computed(() => {
+  if (Array.isArray(internalValue.value)) {
+    return internalValue.value
+      .filter((item) => item)
+      .map((item) => item[props.displayField])
+      .join(";");
+  }
+  return "";
+});
+const internalValue = defineModel();
 const props = defineProps({
   data: Array,
   columns: Array,
-  key: String,
+  valueField: String,
   displayField: String,
 });
-const filteredData = computed(() => {
-  if (props.data) {
-    return props.data.filter((option) => {
-      let filterValue = searchText.value;
-      if (!filterValue) {
-        filterValue = "";
-      }
-      return option[props.displayField].toLowerCase().includes(filterValue.toLowerCase());
+const chooseValue = (item) => {
+  //check if the item is already selected, if not, push to the model
+  if (!internalValue.value.includes(item[props.valueField])) {
+    internalValue.value.push({
+      [props.valueField]: item[props.valueField],
+      [props.displayField]: item[props.displayField],
     });
   }
-  return [];
-});
-const filterOptions = () => {
-  // Implement your filtering logic here
-};
-const chooseValue = (item) => {
-  searchText.value = item[props.displayField];
 };
 </script>
 

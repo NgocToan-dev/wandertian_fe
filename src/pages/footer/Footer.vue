@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-dark text-white text-center py-3">&copy; 2021 Wandertian</footer>
+  <footer class="bg-dark text-white text-center py-3">&copy; 2024 Wandertian</footer>
 </template>
 
 <script setup></script>

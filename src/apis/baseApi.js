@@ -34,6 +34,32 @@ class BaseApi {
     const response = await httpClient.put(request);
     return response.data;
   }
+
+  async load(payload) {
+    const paging = {
+      page: 0,
+      limit: 10,
+      filter: "",
+      ...payload,
+    };
+    const request = {
+      url: [this.getApiUrl(), "list"].join("/"),
+      data: paging,
+    };
+
+    const response = await httpClient.post(request);
+    return response.data;
+  }
+
+  async loadSummary(payload) {
+    const request = {
+      url: [this.getApiUrl(), "listSummary"].join("/"),
+      data: payload,
+    };
+
+    const response = await httpClient.post(request);
+    return response.data;
+  }
 }
 
 export default BaseApi;

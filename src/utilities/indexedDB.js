@@ -45,21 +45,6 @@ class IndexedDB {
     store.add(data.data, data.name);
   }
 
-  async readAll(storeName) {
-    if (!this._db) return;
-    const transaction = this._db.transaction(storeName, "readonly");
-    const store = transaction.objectStore(storeName);
-    return new Promise((resolve, reject) => {
-      const request = store.getAll();
-      request.onsuccess = (event) => {
-        resolve(event.target.result);
-      };
-
-      request.onerror = (event) => {
-        reject(event);
-      };
-    });
-  }
   /**
    * Reads a record from the specified object store based on the given key.
    * @param {string} storeName - The name of the object store.

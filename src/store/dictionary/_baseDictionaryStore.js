@@ -13,11 +13,11 @@ class BaseDictionaryStore extends BaseStore {
     this.actions = {
       // Get full data from api and push to di_cache in indexedDB
       async loadFullCache(moduleName, indexedDB) {
-        const name = 'di_cache';
+        const name = "di_cache";
         const cacheName = `di_cache_${moduleName}`;
         let data = [];
-        data = await indexedDB.readAll(name);
-        if (data?.length === 0) {
+        data = await indexedDB.read(name, cacheName);
+        if (!data) {
           data = await api.getAll();
           const cache = {
             name: cacheName,
@@ -26,7 +26,7 @@ class BaseDictionaryStore extends BaseStore {
           indexedDB.create(name, cache);
         }
 
-        this.$state.data = data[0];
+        this.$state.data = data;
       },
     };
   }
