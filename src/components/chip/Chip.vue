@@ -1,7 +1,8 @@
+// TODO: ADD color for each tag
 <template>
   <!-- Chip -->
   <!-- Small font-size -->
-  <div class="cursor-pointer btn btn-outline-primary btn-sm px-2 py-1 rounded me-2 mb-2" >
+  <div class="cursor-pointer badge bg-primary p-2 rounded">
     {{ text }}
   </div>
 </template>
@@ -12,5 +13,4 @@ const props = defineProps({
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

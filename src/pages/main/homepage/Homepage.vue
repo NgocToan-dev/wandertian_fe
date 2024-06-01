@@ -63,7 +63,7 @@
           <div class="border rounded p-3">
             <h3>Category</h3>
             <!-- list category chip -->
-            <div class="d-flex flex-wrap mt-4">
+            <div class="d-flex flex-wrap mt-3 gap-2">
               <Chip
                 v-for="(category, index) in cacheCategoryCombo.data"
                 :key="index"
@@ -75,7 +75,7 @@
           <div class="border rounded p-3">
             <h3>Tag</h3>
             <!-- list tag chip -->
-            <div class="d-flex flex-wrap mt-4">
+            <div class="d-flex flex-wrap mt-3 gap-2">
               <Chip
                 v-for="(category, index) in cacheTagCombo.data"
                 :key="index"
