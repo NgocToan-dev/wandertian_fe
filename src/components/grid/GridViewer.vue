@@ -49,7 +49,6 @@ const { proxy } = getCurrentInstance();
 const props = defineProps({
   rows: Array,
   columns: Array,
-  formDetail: String,
 });
 const emit = defineEmits(["editRow"]);
 
@@ -81,9 +80,7 @@ const setAlignColumn = (column) => {
 };
 
 const editRow = (row) => {
-  if (props.formDetail) {
-    modalRegister.openModal(props.formDetail, row);
-  }
+  emit("editRow", row);
 };
 
 const deleteRow = () => {

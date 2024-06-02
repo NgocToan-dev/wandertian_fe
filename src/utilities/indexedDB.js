@@ -6,6 +6,7 @@ class IndexedDB {
   _request = null;
   _table = null;
 
+
   /**
    * Opens a connection to an IndexedDB database.
    * @param {string} name - The name of the database.
@@ -14,6 +15,11 @@ class IndexedDB {
    */
   open(name, version, storeName) {
     const me = this;
+    // check if indexedDB has already been opened
+    if (me._db) {
+      return Promise.resolve(me._db);
+    }
+    
     me._request = window.indexedDB.open(name, version);
 
     me._request.onupgradeneeded = function(event) {

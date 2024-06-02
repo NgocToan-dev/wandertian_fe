@@ -1,3 +1,10 @@
 export default {
-  setup(props, ctx) {},
+  data() {
+    return {};
+  },
+  methods: {
+    async refresh() {
+      this.data = await this.store.load();
+    },
+  },
 };

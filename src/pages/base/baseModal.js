@@ -1,37 +1,37 @@
-import { ref } from "vue";
+import { defineComponent } from "vue";
 
-export default {
-  setup(proxy, props) {
-    const beforeOpen = () => {};
-    const beforeClose = () => {};
-    const model = ref([]);
-    if (proxy.$attrs.data) {
-      model.value = { ...proxy.$attrs.data };
-    }
-    const commandClick = async (command) => {
+export default defineComponent({
+  data() {
+    return {
+      model: {},
+    };
+  },
+  mounted() {
+    this.model = { ...this.$attrs.params.data };
+  },
+  methods: {
+    beforeOpen() {},
+    beforeClose() {},
+
+    async commandClick(command) {
       switch (command) {
         case "save":
           await save();
           break;
       }
-    };
+    },
     /**
      * Save data
      */
-    const save = async () => {
+    async save() {
       try {
-        await proxy.store.save(model.value);
-        proxy.$emit("confirm");
-        proxy.$toast.success("Save success");
+        await this.store.save(this.model);
+        this.$emit("confirm");
+        this.$toast.success("Save success");
+        this.$attrs.params.callbackLoad();
       } catch (e) {
-        proxy.$toast.error("Save failed");
+        this.$toast.error("Save failed");
       }
-    };
-    return {
-      model,
-      beforeOpen,
-      beforeClose,
-      commandClick,
-    };
+    },
   },
-};
+});

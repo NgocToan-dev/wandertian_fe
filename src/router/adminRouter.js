@@ -10,11 +10,6 @@ const adminRouter = [
         component: () => import("@/pages/admin/dashboard/Dashboard.vue"),
       },
       {
-        name: "PostList",
-        path: "post",
-        component: () => import("@/pages/admin/post/PostList.vue"),
-      },
-      {
         name: "PostEditor",
         path: "post/:id",
         component: () => import("@/pages/admin/post/PostEditor.vue"),

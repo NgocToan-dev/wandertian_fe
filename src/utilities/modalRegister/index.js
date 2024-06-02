@@ -12,7 +12,7 @@ const openModal = (modalName, data) => {
       escToClose: true,
       clickToClose: false,
       modelValue: true,
-      data: data,
+      params: data,
       onConfirm() {
         close();
       },

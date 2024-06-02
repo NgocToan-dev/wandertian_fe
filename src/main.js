@@ -1,18 +1,21 @@
 import { createApp } from "vue";
-import "./style.css";
 import App from "./App.vue";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap";
 import router from "./router";
+import "bootstrap";
+
 import globalComponents from "./globalComponents";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 import { LoadingPlugin } from "vue-loading-overlay";
-import "vue-loading-overlay/dist/css/index.css";
 import { createPinia } from "pinia";
 import { createVfm } from "vue-final-modal";
-import "vue-final-modal/style.css";
 import ToastPlugin from "vue-toast-notification";
+
+import "./style.css";
+
+import "@vueup/vue-quill/dist/vue-quill.bubble.css";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import "vue-loading-overlay/dist/css/index.css";
+import "vue-final-modal/style.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "vue-toast-notification/dist/theme-bootstrap.css";
 
 const app = createApp(App);

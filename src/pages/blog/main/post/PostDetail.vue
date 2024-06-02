@@ -14,7 +14,7 @@
 
 <script setup>
 import { getCurrentInstance, onMounted, reactive } from "vue";
-import blogApi from "../../../apis/business/blogApi";
+import blogApi from "@/apis/business/blogApi";
 const { proxy } = getCurrentInstance();
 
 const post = reactive({});

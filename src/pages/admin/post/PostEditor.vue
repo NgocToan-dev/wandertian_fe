@@ -1,6 +1,3 @@
-/** * @file PostDetail.vue * @description A Vue component for displaying and editing a
-post detail. * @module components/PostDetail */ /** * Vue component for displaying and
-editing a post detail. * * @template * @component */
 <template>
   <div class="container py-4">
     <div class="row">

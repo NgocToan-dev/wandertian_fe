@@ -29,33 +29,24 @@
       </div>
     </template>
     <template #modal__footer="{ close }">
-      <button @click="saveCategory" class="btn btn-primary btn-sm">Save</button>
+      <button @click="save" class="btn btn-primary btn-sm">Save</button>
       <button @click="close" class="btn btn-outline-danger btn-sm">Cancel</button>
     </template>
   </DynamicModal>
 </template>
 
 <script>
-import baseModal from "@/pages/base/baseModal";
 import { defineComponent, getCurrentInstance } from "vue";
-import { useCategoryStore } from "../../../store/dictionary/categoryStore";
+import { useCategoryStore } from "@/store/dictionary/categoryStore";
+import baseModal from "../../base/baseModal";
 
 export default defineComponent({
   name: "CategoryDetail",
+  extends: baseModal,
   setup(props) {
-    const { proxy } = getCurrentInstance();
-    proxy.store = useCategoryStore();
-    const saveCategory = () => {
-      baseModal.commandClick("save");
-      invalidCache();
-    };
-    // TODO: Add invalid cache
-    const invalidCache = () => {
-      alert("Add invalid cache");
-    };
+    const store = useCategoryStore();
     return {
-      ...baseModal.setup(proxy, props),
-      saveCategory,
+      store,
     };
   },
 });
