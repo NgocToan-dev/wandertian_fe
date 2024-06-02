@@ -1,12 +1,11 @@
 // stores/counter.js
 
 class BaseStore {
-    // init with api
+  // init with api
   constructor(api) {
     const me = this;
     me.state = {
       data: [],
-      loading: false,
     };
     me.getters = {};
     me.actions = {
@@ -18,13 +17,8 @@ class BaseStore {
       async getById(id) {
         return api.getById(id);
       },
-      // create
-      async create(data) {
-        return api.create(data);
-      },
-      // update
-      async update(id, data) {
-        return api.update(id, data);
+      async save(data) {
+        return api.update(data._id, data);
       },
       // delete
       async delete(id) {
@@ -32,7 +26,6 @@ class BaseStore {
       },
     };
   }
-  
 }
 
 export default BaseStore;

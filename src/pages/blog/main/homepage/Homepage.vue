@@ -110,8 +110,8 @@
 <script setup>
 import { computed, getCurrentInstance, onMounted, ref } from "vue";
 import blogApi from "@/apis/business/blogApi";
-import { useCacheCategoryCombo } from "../../../utilities/cache/cacheCategoryCombo";
-import { useCacheTagCombo } from "../../../utilities/cache/cacheTagCombo";
+import { useCacheCategoryCombo } from "@/utilities/cache/cacheCategoryCombo";
+import { useCacheTagCombo } from "@/utilities/cache/cacheTagCombo";
 
 const { proxy } = getCurrentInstance();
 //#region category

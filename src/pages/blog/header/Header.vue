@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import commonFn from "../../utilities/commonFn";
+import commonFn from "@/utilities/commonFn";
 import { getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
 const links = [

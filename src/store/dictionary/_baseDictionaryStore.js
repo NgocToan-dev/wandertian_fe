@@ -7,10 +7,13 @@ class BaseDictionaryStore extends BaseStore {
   constructor(api) {
     super(api);
     this.state = {
-      data: [],
+      ...this.state,
     };
-    this.getters = {};
+    this.getters = {
+      ...this.getters
+    };
     this.actions = {
+      ...this.actions,
       // Get full data from api and push to di_cache in indexedDB
       async loadFullCache(moduleName, indexedDB) {
         const name = "di_cache";

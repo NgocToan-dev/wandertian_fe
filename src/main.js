@@ -5,14 +5,21 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import router from "./router";
 import globalComponents from "./globalComponents";
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import '@vueup/vue-quill/dist/vue-quill.bubble.css';
-import {LoadingPlugin} from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/css/index.css';
-import { createPinia } from 'pinia'
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import "@vueup/vue-quill/dist/vue-quill.bubble.css";
+import { LoadingPlugin } from "vue-loading-overlay";
+import "vue-loading-overlay/dist/css/index.css";
+import { createPinia } from "pinia";
+import { createVfm } from "vue-final-modal";
+import "vue-final-modal/style.css";
+import ToastPlugin from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-bootstrap.css";
 
 const app = createApp(App);
 const pinia = createPinia();
+const vfm = createVfm();
+app.use(vfm);
+app.use(ToastPlugin);
 app.use(router);
 app.use(pinia);
 app.use(LoadingPlugin);

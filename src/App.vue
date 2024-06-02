@@ -1,15 +1,11 @@
 <template>
-  <main class="d-flex flex-column justify-content-between">
-    <Header />
-    <RouterView class="flex-grow-1 mt-5" />
-    <Footer />
-  </main>
+  <RouterView />
+  <ModalsContainer></ModalsContainer>
 </template>
 
 <script setup>
-import Header from "@/pages/header/Header.vue";
-import Footer from "@/pages/footer/Footer.vue";
-import { useConfigureFirstLoad } from "./utilities/configureFirstLoad";
+import { useConfigureFirstLoad } from "@/utilities/configureFirstLoad";
+import { ModalsContainer } from "vue-final-modal";
 const configureFirstLoad = useConfigureFirstLoad();
 
 configureFirstLoad.initCacheData();

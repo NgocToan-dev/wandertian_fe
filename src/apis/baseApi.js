@@ -26,9 +26,11 @@ class BaseApi {
   }
 
   async update(id, data) {
+    const saveData = { ...data };
+    delete saveData._id;
     const request = {
       url: [this.getApiUrl(), id].join("/"),
-      data,
+      data: saveData,
     };
 
     const response = await httpClient.put(request);
