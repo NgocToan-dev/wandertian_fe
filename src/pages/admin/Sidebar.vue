@@ -29,6 +29,10 @@ const backToHome = () => {
 // List item
 const items = [
   {
+    name: "Post",
+    path: "/admin/post",
+  },
+  {
     name: "Tag",
     path: "/admin/tag",
   },

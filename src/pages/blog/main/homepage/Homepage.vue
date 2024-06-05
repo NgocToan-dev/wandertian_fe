@@ -112,8 +112,10 @@ import { computed, getCurrentInstance, onMounted, ref } from "vue";
 import blogApi from "@/apis/business/blogApi";
 import { useCacheCategoryCombo } from "@/utilities/cache/cacheCategoryCombo";
 import { useCacheTagCombo } from "@/utilities/cache/cacheTagCombo";
+import { useBlogStore } from "@/store/business/blogStore";
 
 const { proxy } = getCurrentInstance();
+const blogStore = useBlogStore();
 //#region category
 const { cacheCategoryCombo } = useCacheCategoryCombo();
 //#endregion
@@ -158,7 +160,7 @@ const searchPost = async () => {
  * Loads the posts based on the active page and search value.
  */
 const loadPost = async () => {
-  const res = await blogApi.load({
+  const res = await blogStore.load({
     page: activePage.value,
     limit: limit.value,
     filter: searchValue.value,
@@ -172,7 +174,7 @@ const loadPost = async () => {
  * Loads the summary of posts based on the search value.
  */
 const loadSummary = async () => {
-  const res = await blogApi.loadSummary({ filter: searchValue.value });
+  const res = await blogStore.loadSummary({ filter: searchValue.value });
   if (res) {
     totalPages.value = Math.ceil(res.total / limit.value);
   }

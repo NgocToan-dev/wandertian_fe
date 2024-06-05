@@ -1,69 +1,71 @@
 <template>
-  <div class="container py-4">
-    <div class="row">
-      <div class="h-100 flex-column d-flex col-md-9">
-        <!-- Save button and edit icon -->
-        <div
-          class="post-section mb-2 d-flex flex-row justify-content-between align-items-center"
-        >
-          <div>
-            <button @click="saveDraft" class="btn btn-primary me-2">Save</button>
-            <!-- Cancel button -->
-            <button class="btn btn-outline-primary" @click="cancelEditPost">
-              Cancel
-            </button>
-          </div>
+  <div class="row py-4 px-5">
+    <div class="h-100 flex-column d-flex col-md-9">
+      <!-- Save button and edit icon -->
+      <div
+        class="post-section mb-2 d-flex flex-row justify-content-between align-items-center"
+      >
+        <div>
+          <button @click="saveDraft" class="btn btn-primary me-2">Save</button>
+          <!-- Cancel button -->
+          <button class="btn btn-outline-primary" @click="cancelEditPost">
+            Cancel
+          </button>
         </div>
-
-        <!-- Title and description -->
-        <div class="mb-3">
-          <!-- Editable title -->
-          <div
-            class="fs-2"
-            contenteditable
-            @input="({ target }) => (post.title = target.textContent)"
-          >
-            {{ post.title }}
-          </div>
-
-          <!-- Editable description -->
-          <div
-            class="mt-2"
-            contenteditable
-            @input="({ target }) => (post.description = target.textContent)"
-          >
-            {{ post.description }}
-          </div>
-        </div>
-
-        <!-- Quill editor for content -->
-        <QuillEditor toolbar="full" v-model:content="post.contents" content-type="html" />
       </div>
-      <!-- Properties section -->
-      <div class="d-flex flex-column gap-3 border rounded pt-2 col-md-3">
-        <!-- Input category for post -->
-        <div class="px-3">
-          <h3>Category</h3>
-          <Combobox
-            v-model="post.category"
-            :data="cacheCategoryCombo.data"
-            :columns="cacheCategoryCombo.columns"
-            :valueField="cacheCategoryCombo.key"
-            :displayField="cacheCategoryCombo.displayField"
-          />
+
+      <!-- Title and description -->
+      <div class="mb-3">
+        <!-- Editable title -->
+        <div
+          class="fs-2"
+          contenteditable
+          @input="({ target }) => (post.title = target.textContent)"
+        >
+          {{ post.title }}
         </div>
-        <!-- List Tag -->
-        <div class="px-3">
-          <h3>Tag</h3>
-          <!-- list tag chip -->
-          <Combobox
-            v-model="post.tag"
-            :data="cacheTagCombo.data"
-            :columns="cacheTagCombo.columns"
-            :valueField="cacheTagCombo.key"
-            :displayField="cacheTagCombo.displayField"
-          />
+
+        <!-- Editable description -->
+        <div
+          class="mt-2"
+          contenteditable
+          @input="({ target }) => (post.description = target.textContent)"
+        >
+          {{ post.description }}
         </div>
+      </div>
+
+      <!-- Quill editor for content -->
+      <QuillEditor
+        toolbar="full"
+        v-model:content="post.contents"
+        content-type="html"
+      />
+    </div>
+    <!-- Properties section -->
+    <div class="d-flex flex-column gap-3 border rounded pt-2 col-md-3">
+      <!-- Input category for post -->
+      <div class="px-3">
+        <h3>Category</h3>
+        <Combobox
+          v-model="post.category"
+          :data="cacheCategoryCombo.data"
+          :columns="cacheCategoryCombo.columns"
+          :valueField="cacheCategoryCombo.key"
+          :displayField="cacheCategoryCombo.displayField"
+        />
+      </div>
+      <!-- List Tag -->
+      <div class="px-3">
+        <h3>Tag</h3>
+        <!-- list tag chip -->
+        <Combobox
+          v-model="post.tag"
+          :data="cacheTagCombo.data"
+          :columns="cacheTagCombo.columns"
+          :valueField="cacheTagCombo.key"
+          :displayField="cacheTagCombo.displayField"
+        />
       </div>
     </div>
   </div>
@@ -102,11 +104,11 @@ const saveDraft = async () => {
       tag: post.tag,
     })
     .then(() => {
-      proxy.$router.push({ path: `/post/${post._id}/edit` });
+      proxy.$router.push({ path: "/admin/post" });
     });
 };
 const cancelEditPost = () => {
-  proxy.$router.push({ path: `/post/${post._id}` });
+  proxy.$router.push({ path: "/admin/post" });
 };
 </script>
 

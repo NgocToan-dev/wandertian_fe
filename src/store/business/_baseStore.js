@@ -22,6 +22,9 @@ class BaseStore {
       async load(payload) {
         return api.load(payload);
       },
+      async loadSummary(payload) {
+        return api.loadSummary(payload);
+      },
       async save(data) {
         const res = await api.update(data._id, data);
         if (me.state.isDictionary) {

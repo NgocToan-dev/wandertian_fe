@@ -43,7 +43,6 @@
 
 <script setup>
 import { getCurrentInstance } from "vue";
-import modalRegister from "@/utilities/modalRegister";
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({

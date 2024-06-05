@@ -2,7 +2,7 @@ const adminRouter = [
   {
     name: "Admin",
     path: "/admin",
-    redirect: "/admin/tag",
+    redirect: "/admin/post",
     component: () => import("@/pages/admin/AdminIndex.vue"),
     meta: { requiresAuth: true },
     children: [
@@ -15,6 +15,11 @@ const adminRouter = [
         name: "PostEditor",
         path: "post/:id",
         component: () => import("@/pages/admin/post/PostEditor.vue"),
+      },
+      {
+        name: "PostList",
+        path: "post",
+        component: () => import("@/pages/admin/post/PostList.vue"),
       },
       {
         name: "CategoryList",
