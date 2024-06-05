@@ -1,7 +1,6 @@
-import BaseApi from "../baseApi";
+import BuApi from "./_buApi";
 
-class BlogApi extends BaseApi {
-  apiName = "business";
+class BlogApi extends BuApi {
   controller = "blog";
 }
 

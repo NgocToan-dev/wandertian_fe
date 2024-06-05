@@ -1,26 +1,27 @@
 const blogRouter = [
   {
     path: "/",
+    redirect: "/home",
     component: () => import("@/pages/blog/BlogIndex.vue"),
     children: [
       {
         name: "Home",
-        path: "",
+        path: "home",
         component: () => import("@/pages/blog/main/homepage/Homepage.vue"),
       },
       {
         name: "About",
-        path: "/about",
+        path: "about",
         component: () => import("@/pages/blog/main/about/About.vue"),
       },
       {
         name: "Contact",
-        path: "/contact",
+        path: "contact",
         component: () => import("@/pages/blog/main/contact/Contact.vue"),
       },
       {
         name: "PostDetail",
-        path: "/post/:id",
+        path: "post/:id",
         component: () => import("@/pages/blog/main/post/PostDetail.vue"),
       },
     ],

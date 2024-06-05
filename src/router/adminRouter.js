@@ -2,11 +2,13 @@ const adminRouter = [
   {
     name: "Admin",
     path: "/admin",
+    redirect: "/admin/tag",
     component: () => import("@/pages/admin/AdminIndex.vue"),
+    meta: { requiresAuth: true },
     children: [
       {
         name: "Dashboard",
-        path: "",
+        path: "dashboard",
         component: () => import("@/pages/admin/dashboard/Dashboard.vue"),
       },
       {

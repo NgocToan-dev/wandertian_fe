@@ -5,7 +5,7 @@ import tagApi from "@/apis/business/tagApi";
 const tagStore = new BaseDictionaryStore(tagApi);
 
 export const useTagStore = defineStore("tagStore", {
-  state: () => ({ ...tagStore.state, module: "tag" }),
+  state: () => ({ ...tagStore.state, module: "tag"}),
   getters: {
     ...tagStore.getters,
   },
