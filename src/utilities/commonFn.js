@@ -30,10 +30,13 @@ const isLogin = () => {
   return localStorage.getItem("token") ? true : false;
 };
 
+const emptyObjectId = "000000000000000000000000";
+
 export default {
   showMask,
   hideMask,
   backToHome,
   logout,
   isLogin,
+  emptyObjectId,
 };

@@ -48,6 +48,7 @@ const internalText = computed(() => {
   return "";
 });
 const internalValue = defineModel();
+internalValue.value = [];
 const props = defineProps({
   data: Array,
   columns: Array,
@@ -56,7 +57,7 @@ const props = defineProps({
 });
 const chooseValue = (item) => {
   //check if the item is already selected, if not, push to the model
-  if (!internalValue.value.includes(item[props.valueField])) {
+  if (internalValue.value && !internalValue.value.includes(item[props.valueField])) {
     internalValue.value.push({
       [props.valueField]: item[props.valueField],
       [props.displayField]: item[props.displayField],

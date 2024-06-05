@@ -8,9 +8,7 @@
         <div>
           <button @click="saveDraft" class="btn btn-primary me-2">Save</button>
           <!-- Cancel button -->
-          <button class="btn btn-outline-primary" @click="cancelEditPost">
-            Cancel
-          </button>
+          <button class="btn btn-outline-primary" @click="cancelEditPost">Cancel</button>
         </div>
       </div>
 
@@ -19,7 +17,8 @@
         <!-- Editable title -->
         <div
           class="fs-2"
-          contenteditable
+          contenteditable="true"
+          placeholder="Title"
           @input="({ target }) => (post.title = target.textContent)"
         >
           {{ post.title }}
@@ -28,7 +27,8 @@
         <!-- Editable description -->
         <div
           class="mt-2"
-          contenteditable
+          contenteditable="true"
+          placeholder="Description"
           @input="({ target }) => (post.description = target.textContent)"
         >
           {{ post.description }}
@@ -36,11 +36,7 @@
       </div>
 
       <!-- Quill editor for content -->
-      <QuillEditor
-        toolbar="full"
-        v-model:content="post.contents"
-        content-type="html"
-      />
+      <QuillEditor toolbar="full" v-model:content="post.contents" content-type="html" />
     </div>
     <!-- Properties section -->
     <div class="d-flex flex-column gap-3 border rounded pt-2 col-md-3">
@@ -76,16 +72,23 @@ import { getCurrentInstance, onMounted, reactive, ref } from "vue";
 import blogApi from "@/apis/business/blogApi";
 import { useCacheCategoryCombo } from "../../../utilities/cache/cacheCategoryCombo";
 import { useCacheTagCombo } from "../../../utilities/cache/cacheTagCombo";
+import EditMode from "@/utilities/enum/EditMode";
 
 const { proxy } = getCurrentInstance();
 const post = reactive({});
 const { cacheCategoryCombo } = useCacheCategoryCombo();
 const { cacheTagCombo } = useCacheTagCombo();
 
+const editMode = ref(EditMode.EDIT);
+
 /**
  * Lifecycle hook that fetches the post data when the component is mounted.
  */
 onMounted(async () => {
+  if (proxy.$route.params.editMode === EditMode.CREATE) {
+    editMode.value = EditMode.CREATE;
+    return;
+  }
   const res = await blogApi.getById(proxy.$route.params.id);
   Object.assign(post, res);
 });
@@ -96,7 +99,7 @@ onMounted(async () => {
  */
 const saveDraft = async () => {
   blogApi
-    .update(post._id, {
+    .create({
       title: post.title,
       description: post.description,
       contents: post.contents,

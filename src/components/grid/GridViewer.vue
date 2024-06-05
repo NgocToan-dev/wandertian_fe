@@ -49,7 +49,7 @@ const props = defineProps({
   rows: Array,
   columns: Array,
 });
-const emit = defineEmits(["editRow"]);
+const emit = defineEmits(["editRow", "deleteRow"]);
 
 const setAlignColumn = (column) => {
   let align = column.align;
@@ -82,8 +82,8 @@ const editRow = (row) => {
   emit("editRow", row);
 };
 
-const deleteRow = () => {
-  console.log("Delete row");
+const deleteRow = (row) => {
+  emit("deleteRow", row);
 };
 </script>
 

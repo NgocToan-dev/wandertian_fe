@@ -1,7 +1,7 @@
 <template>
   <div class="admin-page d-flex">
     <Sidebar />
-    <RouterView class="flex-grow-1" />
+    <RouterView class="main-content" />
   </div>
 </template>
 
@@ -12,5 +12,8 @@ import Sidebar from "./Sidebar.vue";
 <style lang="scss" scoped>
 .admin-page {
   height: 100vh;
+}
+.main-content {
+  width: calc(100% - 200px);
 }
 </style>

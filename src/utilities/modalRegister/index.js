@@ -5,7 +5,11 @@ const defineComponentByName = (name) => {
   return register[name];
 };
 const openModal = (modalName, data) => {
-  const modal = defineComponentByName(modalName);
+  // check if modalName is a string
+  let modal = modalName;
+  if (typeof modal === "string") {
+    modal = defineComponentByName(modalName);
+  }
   const { open, close } = useModal({
     component: modal,
     attrs: {
