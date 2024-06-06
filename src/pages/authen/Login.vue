@@ -87,7 +87,7 @@
       </button>
       <p class="small fw-bold mt-2 pt-1 mb-0">
         Don't have an account?
-        <a class="link-danger" @click="changeFormMode">Register</a>
+        <a class="link-danger cursor-pointer" @click="changeFormMode">Register</a>
       </p>
     </div>
   </div>

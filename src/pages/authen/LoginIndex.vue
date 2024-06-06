@@ -15,7 +15,7 @@
         </div>
         <div class="vertical-divider"></div>
         <Login v-if="loginMode" @changeFormMode="changeFormMode"/>
-        <Signup v-else @changeFormMode="changeFormMode"/>
+        <Register v-else @changeFormMode="changeFormMode"/>
       </div>
     </div>
   </section>
@@ -24,6 +24,7 @@
 <script setup>
 import { ref } from "vue";
 import Login from "./Login.vue";
+import Register from "./Register.vue";
 
 const loginMode = ref(true);
 const changeFormMode = () => {

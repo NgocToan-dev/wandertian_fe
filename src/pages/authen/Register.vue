@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="!loginMode"
     class="col p-5 d-flex flex-column justify-content-center align-content-center"
   >
     <!-- Email input -->
@@ -72,7 +71,7 @@
       </div>
       <p class="small fw-bold mt-2 pt-1 mb-0">
         Already have an account?
-        <a class="link-primary" @click="changeFormMode">Login</a>
+        <a class="link-primary cursor-pointer" @click="changeFormMode">Login</a>
       </p>
     </div>
   </div>
