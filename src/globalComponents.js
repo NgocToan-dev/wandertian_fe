@@ -4,6 +4,7 @@ import Chip from "./components/chip/Chip.vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import Combobox from "@/components/combobox/Combobox.vue";
 import DynamicModal from "@/components/modal/DynamicModal.vue";
+import BaseInput from "./components/input/BaseInput.vue";
 
 export default {
   install(app) {
@@ -12,5 +13,6 @@ export default {
     app.component("QuillEditor", QuillEditor);
     app.component("Combobox", Combobox);
     app.component("DynamicModal", DynamicModal);
+    app.component("BaseInput", BaseInput);
   },
 };

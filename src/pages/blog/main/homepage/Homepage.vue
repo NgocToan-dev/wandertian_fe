@@ -68,6 +68,7 @@
                 v-for="(category, index) in cacheCategoryCombo.data"
                 :key="index"
                 :text="category[cacheCategoryCombo.displayField]"
+                type="category"
               />
             </div>
           </div>
@@ -80,6 +81,7 @@
                 v-for="(category, index) in cacheTagCombo.data"
                 :key="index"
                 :text="category[cacheTagCombo.displayField]"
+                type="tag"
               />
             </div>
           </div>
@@ -93,7 +95,7 @@
                 class="fav-post d-flex gap-3 cursor-pointer p-2 rounded"
                 @click="readMore(news._id)"
               >
-                <img src="https://via.placeholder.com/100" alt="post" />
+                <img v-if="news.imgSrc" :src="news.imgSrc" alt="post" />
                 <div>
                   <h5>{{ news.title }}</h5>
                   <p>{{ news.description }}</p>
@@ -113,6 +115,7 @@ import blogApi from "@/apis/business/blogApi";
 import { useCacheCategoryCombo } from "@/utilities/cache/cacheCategoryCombo";
 import { useCacheTagCombo } from "@/utilities/cache/cacheTagCombo";
 import { useBlogStore } from "@/store/business/blogStore";
+import { useLoadingStore } from "@/store/common/loadingStore";
 
 const { proxy } = getCurrentInstance();
 const blogStore = useBlogStore();
@@ -134,7 +137,8 @@ const limit = ref(10);
 //#endregion
 const searchValue = ref("");
 onMounted(async () => {
-  await searchPost("");
+  await loadPost();
+  await loadSummary();
 });
 /**
  * Changes the active page and loads the corresponding posts.
@@ -152,21 +156,26 @@ const changePage = async (page) => {
  * Searches for posts based on the search value and loads the results.
  */
 const searchPost = async () => {
-  await loadPost();
-  await loadSummary();
+  proxy.$router.push({ name: "SearchResult", query: { search: searchValue.value } });
 };
 
 /**
  * Loads the posts based on the active page and search value.
  */
 const loadPost = async () => {
-  const res = await blogStore.load({
-    page: activePage.value,
-    limit: limit.value,
-    filter: searchValue.value,
-  });
-  if (res) {
-    listNews.value = res;
+  const mask = useLoadingStore();
+  try {
+    mask.show();
+    const res = await blogStore.load({
+      page: activePage.value,
+      limit: limit.value,
+      filter: searchValue.value,
+    });
+    if (res) {
+      listNews.value = res;
+    }
+  } finally {
+    mask.hide();
   }
 };
 

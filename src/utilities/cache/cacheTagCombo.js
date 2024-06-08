@@ -9,9 +9,9 @@ export const useCacheTagCombo = () => {
   });
 
   const configDefault = {
-    columns: [{ dataField: "tag_name", label: "Name" }],
+    columns: [{ dataField: "name", label: "Name" }],
     key: "_id",
-    displayField: "tag_name",
+    displayField: "name",
   };
 
   const cacheTagCombo = reactive({

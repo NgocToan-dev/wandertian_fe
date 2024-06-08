@@ -17,10 +17,16 @@ import "vue-loading-overlay/dist/css/index.css";
 import "vue-final-modal/style.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "vue-toast-notification/dist/theme-bootstrap.css";
+import { globalVariable } from "./globalVariable";
 
 const app = createApp(App);
 const pinia = createPinia();
 const vfm = createVfm();
+
+// Add global variable
+app.config.globalProperties.$global = globalVariable;
+
+
 app.use(vfm);
 app.use(ToastPlugin);
 app.use(router);

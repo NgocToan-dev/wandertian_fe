@@ -1,7 +1,7 @@
 <template>
   <div class="card">
-    <div class="card-image">
-      <img src="https://placehold.co/100" class="card-img-top" alt="..." />
+    <div class="card-image" v-if="imgSrc">
+      <img :src="imgSrc" class="card-img-top" alt="..." />
     </div>
     <div class="card-body">
       <h5 class="card-title">{{ post.title }}</h5>
@@ -22,6 +22,7 @@ const { proxy } = getCurrentInstance();
 // init props
 const props = defineProps({
   post: Object,
+  imgSrc: String,
 });
 // read more function
 const readMore = (e) => {
@@ -35,7 +36,7 @@ const readMore = (e) => {
   min-width: 300px;
   .card-image {
     width: 100%;
-    height: 300px;
+    max-height: 300px;
     img {
       width: 100%;
       height: 100%;

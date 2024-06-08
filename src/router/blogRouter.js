@@ -24,6 +24,11 @@ const blogRouter = [
         path: "post/:id",
         component: () => import("@/pages/blog/main/post/PostDetail.vue"),
       },
+      {
+        name: "SearchResult",
+        path: "search",
+        component: () => import("@/pages/blog/main/search/SearchResult.vue"),
+      },
     ],
   },
 ];

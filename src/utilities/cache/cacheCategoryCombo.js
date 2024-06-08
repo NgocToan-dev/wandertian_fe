@@ -10,12 +10,11 @@ export const useCacheCategoryCombo = () => {
 
   const configDefault = {
     columns: [
-      { dataField: "category_id", label: "ID" },
-      { dataField: "category_name", label: "Name" },
+      { dataField: "name", label: "Name" },
       // Add more columns here
     ],
     key: "_id",
-    displayField: "category_name",
+    displayField: "name",
   };
 
   const cacheCategoryCombo = reactive({

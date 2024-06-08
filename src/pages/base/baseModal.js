@@ -4,6 +4,7 @@ export default defineComponent({
   data() {
     return {
       model: {},
+      mode: this.$attrs.params.mode,
     };
   },
   mounted() {
@@ -15,8 +16,8 @@ export default defineComponent({
 
     async commandClick(command) {
       switch (command) {
-        case "save":
-          await save();
+        case this.$global.Command.SAVE:
+          await this.save();
           break;
       }
     },
@@ -25,10 +26,10 @@ export default defineComponent({
      */
     async save() {
       try {
-        await this.store.save(this.model);
+        await this.store.save({ ...this.model, mode: this.mode });
         this.$emit("confirm");
         this.$toast.success("Save success");
-        this.$attrs.params.callbackLoad();
+        await this.$attrs.params.callbackLoad();
       } catch (e) {
         this.$toast.error("Save failed");
       }

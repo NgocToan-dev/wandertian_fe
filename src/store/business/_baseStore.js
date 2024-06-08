@@ -1,5 +1,6 @@
 // stores/counter.js
 
+import EditMode from "@/utilities/enum/EditMode";
 import { socket } from "../../socket";
 
 class BaseStore {
@@ -26,7 +27,12 @@ class BaseStore {
         return api.loadSummary(payload);
       },
       async save(data) {
-        const res = await api.update(data);
+        let res = null;
+        if (data.mode === EditMode.CREATE) {
+          res = api.create(data);
+        } else {
+          res = api.update(data);
+        }
         if (me.state.isDictionary) {
           this.invalidCache();
         }

@@ -7,7 +7,7 @@ export const useLoadingStore = defineStore({
     loader: null,
   }),
   actions: {
-    showMask(container) {
+    show(container) {
       this.$state.loader =
         this.$state.loader || useLoading({ container: container || null });
       const loadHide = this.$state.loader.show({
@@ -19,7 +19,7 @@ export const useLoadingStore = defineStore({
       });
       this.$state.loader.hide = loadHide.hide;
     },
-    hideMask() {
+    hide() {
       this.$state.loader.hide();
     },
   },

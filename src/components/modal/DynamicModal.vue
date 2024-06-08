@@ -29,7 +29,6 @@
   </VueFinalModal>
 </template>
 <script setup>
-import { getCurrentInstance } from "vue";
 import { VueFinalModal } from "vue-final-modal";
 const props = defineProps({
   title: String,

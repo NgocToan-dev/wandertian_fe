@@ -22,16 +22,17 @@ export default {
     async refresh() {
       const mask = useLoadingStore();
       try {
-        mask.showMask();
+        mask.show();
         this.items = await this.store.load();
       } finally {
-        mask.hideMask();
+        mask.hide();
       }
     },
     editRow(record) {
       this.$router.push({
         name: this.formDetail,
-        params: { id: record._id, editMode: EditMode.EDIT },
+        params: { id: record._id },
+        query: { mode: EditMode.EDIT },
       });
     },
     deleteRow(record) {

@@ -26,5 +26,4 @@ socket.on("update_di_cache", async (socket_param) => {
   // Update record in indexedDB cache when receive message from server
   const { initCacheData } = useConfigureFirstLoad();
   await initCacheData([socket_param.table], true);
-  state.messages.push(message);
 });

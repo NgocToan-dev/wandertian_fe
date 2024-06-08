@@ -7,12 +7,10 @@
   >
     <template #modal__content>
       <div class="form-group">
-        <label for="name">Name</label>
-        <input
-          v-model="model.tag_name"
+        <BaseInput
+          label="Name"
+          v-model="model.name"
           type="text"
-          class="form-control"
-          id="name"
           placeholder="Enter description"
         />
       </div>

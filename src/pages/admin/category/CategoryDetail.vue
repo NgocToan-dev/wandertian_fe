@@ -4,39 +4,28 @@
     @before-open="beforeOpen"
     @before-close="beforeClose"
     width="500"
-    height="300"
   >
     <template #modal__content>
-      <div class="form-group">
-        <label for="ID">ID</label>
-        <input
-          v-model="model.category_id"
-          type="text"
-          class="form-control"
-          id="ID"
-          placeholder="Enter ID"
-        />
-      </div>
       <div class="form-group mt-2">
-        <label for="name">Name</label>
-        <input
-          v-model="model.category_name"
+        <BaseInput
+          label="Name"
+          v-model="model.name"
           type="text"
-          class="form-control"
-          id="name"
           placeholder="Enter description"
         />
       </div>
     </template>
     <template #modal__footer="{ close }">
-      <button @click="save" class="btn btn-primary btn-sm">Save</button>
+      <button @click="commandClick($global.Command.SAVE)" class="btn btn-primary btn-sm">
+        Save
+      </button>
       <button @click="close" class="btn btn-outline-danger btn-sm">Cancel</button>
     </template>
   </DynamicModal>
 </template>
 
 <script>
-import { defineComponent, getCurrentInstance } from "vue";
+import { defineComponent, getCurrentInstance, onMounted } from "vue";
 import { useCategoryStore } from "@/store/dictionary/categoryStore";
 import baseModal from "../../base/baseModal";
 
