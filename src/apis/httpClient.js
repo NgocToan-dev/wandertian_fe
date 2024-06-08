@@ -2,41 +2,24 @@ import axios from "axios";
 import commonFn from "@/utilities/commonFn";
 
 class HttpClient {
+  constructor() {
+    this.mask = null;
+  }
   async get(request) {
-    let mask = commonFn.showMask();
-    try {
-      const response = await axios.get(request.url);
-      return response;
-    } finally {
-      commonFn.hideMask(mask);
-    }
+    const response = await axios.get(request.url);
+    return response;
   }
   async post(request) {
-    let mask = commonFn.showMask();
-    try {
-      const response = await axios.post(request.url, request.data);
-      return response;
-    } finally {
-      commonFn.hideMask(mask);
-    }
+    const response = await axios.post(request.url, request.data);
+    return response;
   }
   async put(request) {
-    let mask = commonFn.showMask();
-    try {
-      const response = await axios.put(request.url, request.data);
-      return response;
-    } finally {
-      commonFn.hideMask(mask);
-    }
+    const response = await axios.put(request.url, request.data);
+    return response;
   }
   async delete(request) {
-    let mask = commonFn.showMask();
-    try {
-      const response = await axios.delete(request.url);
-      return response;
-    } finally {
-      commonFn.hideMask(mask);
-    }
+    const response = await axios.delete(request.url);
+    return response;
   }
 }
 export default new HttpClient();
