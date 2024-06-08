@@ -3,7 +3,13 @@
   <div class="py-3 px-4">
     <div class="grid-toolbar d-flex justify-content-between align-content-center mb-2">
       <h4>Post List</h4>
-      <div class="btn btn-primary" @click="addPost">Add Post</div>
+      <div class="d-flex gap-2">
+        <div class="btn btn-outline-primary" @click="refresh">
+          <!-- refresh -->
+          <i class="fas fa-sync-alt"></i>
+        </div>
+        <div class="btn btn-primary" @click="addPost">Add Post</div>
+      </div>
     </div>
     <GridViewer
       :rows="items"
@@ -37,11 +43,26 @@ export default {
         dataField: "title",
         label: "Title",
         sort: true,
+        width: 200,
       },
       {
         dataField: "description",
         label: "Description",
         sort: true,
+      },
+      {
+        dataField: "createdDate",
+        label: "Created Date",
+        sort: true,
+        dataType: "date",
+        width: 120,
+      },
+      {
+        dataField: "updatedDate",
+        label: "Updated Date",
+        sort: true,
+        dataType: "date",
+        width: 120,
       },
       {
         dataField: "rowAction",
@@ -51,7 +72,8 @@ export default {
     const addPost = () => {
       proxy.$router.push({
         name: formDetail,
-        params: { id: commonFn.emptyObjectId, editMode: EditMode.CREATE },
+        params: { id: commonFn.emptyObjectId },
+        query: { mode: EditMode.CREATE },
       });
     };
     return {

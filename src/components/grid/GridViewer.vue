@@ -24,15 +24,15 @@
               v-if="column.dataField == 'rowAction'"
               class="rowAction d-flex gap-1 justify-content-center"
             >
-              <button class="btn btn-primary" @click="editRow(row)">
+              <button class="btn btn-primary btn-sm" @click="editRow(row)">
                 <i class="fas fa-edit"></i>
               </button>
-              <button class="btn btn-danger" @click="deleteRow(row)">
+              <button class="btn btn-danger btn-sm" @click="deleteRow(row)">
                 <i class="fas fa-trash"></i>
               </button>
             </div>
             <div v-else>
-              {{ row[column.dataField] }}
+              {{ setFormatType(row[column.dataField], column.dataType) }}
             </div>
           </td>
         </tr>
@@ -77,6 +77,15 @@ const setAlignColumn = (column) => {
   }
   return align ? `text-${align}` : "";
 };
+const setFormatType = (value, dataType) => {
+  switch (dataType) {
+    case "date":
+      if (!(typeof value == "string")) return "";
+      return new Date(value).toLocaleDateString();
+    default:
+      return value;
+  }
+};
 
 const editRow = (row) => {
   emit("editRow", row);
@@ -87,4 +96,8 @@ const deleteRow = (row) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+th {
+  white-space: nowrap;
+}
+</style>

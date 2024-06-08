@@ -11,9 +11,10 @@ import Sidebar from "./Sidebar.vue";
 
 <style lang="scss" scoped>
 .admin-page {
-  height: 100vh;
-}
-.main-content {
-  width: calc(100% - 200px);
+  min-height: 100vh;
+  .main-content {
+    width: calc(100% - 200px);
+    min-height: inherit;
+  }
 }
 </style>

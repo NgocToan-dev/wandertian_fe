@@ -26,7 +26,7 @@ class BaseStore {
         return api.loadSummary(payload);
       },
       async save(data) {
-        const res = await api.update(data._id, data);
+        const res = await api.update(data);
         if (me.state.isDictionary) {
           this.invalidCache();
         }

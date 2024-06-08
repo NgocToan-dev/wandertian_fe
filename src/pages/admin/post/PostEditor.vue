@@ -1,5 +1,5 @@
 <template>
-  <div class="row py-4 px-5">
+  <div class="row py-4 px-5 h-100">
     <div class="h-100 flex-column d-flex col-md-9">
       <!-- Save button and edit icon -->
       <div
@@ -85,7 +85,7 @@ const editMode = ref(EditMode.EDIT);
  * Lifecycle hook that fetches the post data when the component is mounted.
  */
 onMounted(async () => {
-  if (proxy.$route.params.editMode === EditMode.CREATE) {
+  if (proxy.$route.query.mode === EditMode.CREATE) {
     editMode.value = EditMode.CREATE;
     return;
   }
@@ -98,17 +98,33 @@ onMounted(async () => {
  * @async
  */
 const saveDraft = async () => {
-  blogApi
-    .create({
-      title: post.title,
-      description: post.description,
-      contents: post.contents,
-      category: post.category,
-      tag: post.tag,
-    })
-    .then(() => {
-      proxy.$router.push({ path: "/admin/post" });
-    });
+  if (editMode.value === EditMode.CREATE) {
+    await createPost();
+  } else {
+    await updatePost();
+  }
+};
+/**
+ * Creates a new post.
+ * @async
+ * @returns {Promise<void>}
+ * @created 8/6/2024
+ */
+const createPost = async () => {
+  post.createdDate = new Date();
+  await blogApi.create(post);
+  proxy.$router.push({ path: "/admin/post" });
+};
+/**
+ * Updates the post.
+ * @async
+ * @returns {Promise<void>}
+ * @created 8/6/2024
+ */
+const updatePost = async () => {
+  post.updatedDate = new Date();
+  await blogApi.update(post);
+  proxy.$router.push({ path: "/admin/post" });
 };
 const cancelEditPost = () => {
   proxy.$router.push({ path: "/admin/post" });

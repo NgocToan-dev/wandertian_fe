@@ -1,10 +1,8 @@
+import { useLoadingStore } from "@/store/common/loadingStore";
 import axios from "axios";
-import commonFn from "@/utilities/commonFn";
 
 class HttpClient {
-  constructor() {
-    this.mask = null;
-  }
+  constructor() {}
   async get(request) {
     const response = await axios.get(request.url);
     return response;

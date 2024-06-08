@@ -34,7 +34,8 @@ class BaseApi {
     return response.data;
   }
 
-  async update(id, data) {
+  async update(data) {
+    const id = data._id;
     const saveData = { ...data };
     delete saveData._id;
     const request = {

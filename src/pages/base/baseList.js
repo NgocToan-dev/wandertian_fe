@@ -1,4 +1,4 @@
-import commonFn from "@/utilities/commonFn";
+import { useLoadingStore } from "@/store/common/loadingStore";
 import EditMode from "@/utilities/enum/EditMode";
 import { showInfo } from "@/utilities/modalRegister/messageBox";
 
@@ -14,22 +14,18 @@ export default {
   },
   methods: {
     async initData() {
-      try {
-        let loader = commonFn.showMask();
-        const data = await this.store.load();
-        if (data) {
-          this.items = data;
-        }
-      } finally {
-        commonFn.hideMask(loader);
+      const data = await this.store.load();
+      if (data) {
+        this.items = data;
       }
     },
     async refresh() {
+      const mask = useLoadingStore();
       try {
-        commonFn.showMask();
+        mask.showMask();
         this.items = await this.store.load();
       } finally {
-        commonFn.hideMask();
+        mask.hideMask();
       }
     },
     editRow(record) {
@@ -42,10 +38,10 @@ export default {
       showInfo(
         `Are you sure you want to delete <b>${record.title}</b> record?`,
         "Warning",
-        () => {
-          this.store.delete(record._id);
+        async () => {
+          await this.store.delete(record._id);
           this.$toast.success("Record deleted successfully.");
-          this.refresh();
+          await this.refresh();
         }
       );
     },

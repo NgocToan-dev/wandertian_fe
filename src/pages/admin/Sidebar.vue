@@ -1,6 +1,6 @@
 <template>
   <!-- Sidebar -->
-  <div class="sidebar bg-dark h-100 py-2">
+  <div class="sidebar bg-dark py-2">
     <h4 @click="backToHome" class="cursor-pointer text-center mb-4">Wandertian</h4>
     <ul class="list-unstyled">
       <li

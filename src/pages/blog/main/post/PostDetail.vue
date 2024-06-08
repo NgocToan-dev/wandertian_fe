@@ -28,4 +28,8 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.ql-editor) {
+  padding: 0;
+}
+</style>
