@@ -1,3 +1,4 @@
+import commonFn from "@/utilities/commonFn";
 import EditMode from "@/utilities/enum/EditMode";
 import { showInfo } from "@/utilities/modalRegister/messageBox";
 
@@ -13,13 +14,23 @@ export default {
   },
   methods: {
     async initData() {
-      const data = await this.store.load();
-      if (data) {
-        this.items = data;
+      try {
+        let loader = commonFn.showMask();
+        const data = await this.store.load();
+        if (data) {
+          this.items = data;
+        }
+      } finally {
+        commonFn.hideMask(loader);
       }
     },
     async refresh() {
-      this.items = await this.store.load();
+      try {
+        commonFn.showMask();
+        this.items = await this.store.load();
+      } finally {
+        commonFn.hideMask();
+      }
     },
     editRow(record) {
       this.$router.push({

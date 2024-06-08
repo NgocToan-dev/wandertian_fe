@@ -2,10 +2,13 @@ import { useLoading } from "vue-loading-overlay";
 
 const $loading = useLoading({});
 
-const showMask = () => {
+const showMask = (container) => {
   return $loading.show({
     // Optional parameters
-    container: null,
+    container: container || null,
+    color: '#0D6EFD',
+    loader: 'spinner',
+    zIndex: 999,
   });
 };
 
