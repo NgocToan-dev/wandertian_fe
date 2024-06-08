@@ -14,9 +14,15 @@ export default {
   },
   methods: {
     async initData() {
-      const data = await this.store.load();
-      if (data) {
-        this.items = data;
+      const mask = useLoadingStore();
+      try {
+        mask.show();
+        const data = await this.store.load();
+        if (data) {
+          this.items = data;
+        }
+      } finally {
+        mask.hide();
       }
     },
     async refresh() {
