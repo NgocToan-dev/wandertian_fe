@@ -1,16 +1,13 @@
 <template>
   <div class="w-100 form-control">
     <div class="choice d-flex flex-wrap gap-1">
-      <span
-        class="d-flex gap-2 align-items-center badge rounded-pill text-bg-primary"
+      <Chip
         v-for="item in internalValue"
         :key="item[props.valueField]"
-      >
-        <span>{{ item[props.displayField] }}</span>
-        <span @click="removeChoice(item)" class="cursor-pointer">
-          <i class="fas fa-times"></i>
-        </span>
-      </span>
+        :text="item[props.displayField]"
+        removeIcon
+        @remove="removeChoice(item)"
+      />
     </div>
     <input
       class="w-100 mt-1"

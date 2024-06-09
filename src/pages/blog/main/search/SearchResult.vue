@@ -8,17 +8,14 @@
       </div>
 
       <!-- Post Section -->
-      <div
-        class="d-flex flex-column gap-3 border rounded mt-3"
-        v-if="listNews.length > 0"
-      >
+      <div class="d-flex flex-column gap-3 rounded mt-3" v-if="listNews.length > 0">
         <div
           v-for="(news, index) in listNews"
           :key="index"
-          class="w-100 d-flex gap-3 p-2 rounded"
+          class="w-100 d-flex gap-3 p-2 border rounded"
         >
-          <img v-if="news.imgSrc" class="w-25" :src="news.imgSrc" alt="post" />
-          <div class="d-flex flex-column flex-grow-1">
+          <img class="w-25" :src="news.imageTheme" alt="post" height="200"/>
+          <div class="d-flex flex-column justify-content-between flex-grow-1">
             <div>
               <h5>{{ news.title }}</h5>
               <p>{{ news.description }}</p>

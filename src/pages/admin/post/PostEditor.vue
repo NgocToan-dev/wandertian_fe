@@ -63,6 +63,14 @@
           :displayField="cacheTagCombo.displayField"
         />
       </div>
+      <!-- Image theme -->
+      <div class="image-theme px-3">
+        <h3>Image</h3>
+        <input type="file" class="form-control" @change="chooseImageTheme" />
+        <div class="w-100 mt-2 p-1 border rounded">
+          <img :src="post.imageTheme" alt="image-theme" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -73,6 +81,7 @@ import blogApi from "@/apis/business/blogApi";
 import { useCacheCategoryCombo } from "../../../utilities/cache/cacheCategoryCombo";
 import { useCacheTagCombo } from "../../../utilities/cache/cacheTagCombo";
 import EditMode from "@/utilities/enum/EditMode";
+import { useLoadingStore } from "@/store/common/loadingStore";
 
 const { proxy } = getCurrentInstance();
 const post = reactive({});
@@ -89,8 +98,14 @@ onMounted(async () => {
     editMode.value = EditMode.CREATE;
     return;
   }
-  const res = await blogApi.getById(proxy.$route.params.id);
-  Object.assign(post, res);
+  const mask = useLoadingStore();
+  try {
+    mask.show();
+    const res = await blogApi.getById(proxy.$route.params.id);
+    Object.assign(post, res);
+  } finally {
+    mask.hide();
+  }
 });
 
 /**
@@ -129,10 +144,49 @@ const updatePost = async () => {
 const cancelEditPost = () => {
   proxy.$router.push({ path: "/admin/post" });
 };
+
+/**
+ * Function to handle image selection and display it in the post editor.
+ *
+ * @param {Event} event - The event object triggered by the image selection.
+ */
+const chooseImageTheme = (event) => {
+  const file = event.target.files[0];
+
+  // Check if the file type is supported
+  if (!checkFileType(file)) {
+    proxy.$toast.error("File type is not supported");
+    return;
+  }
+
+  // Read the selected image file and set it as the post image
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    post.imageTheme = e.target.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+/**
+ * Checks if the file type is accepted.
+ * @param {File} file - The file to check.
+ * @returns {boolean} - Returns true if the file type is accepted, otherwise false.
+ */
+const checkFileType = (file) => {
+  const fileTypeAccepted = ["png", "jpeg", "jpg"];
+  const fileType = file.name.split(".").pop();
+  return fileTypeAccepted.includes(fileType);
+};
 </script>
 
 <style lang="scss" scoped>
 .post-section {
   height: 40px;
+}
+.image-theme {
+  img {
+    width: 100%;
+    height: auto;
+  }
 }
 </style>

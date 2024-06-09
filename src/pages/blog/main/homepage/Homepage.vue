@@ -3,8 +3,8 @@
     <div class="container">
       <!-- Post Section -->
       <div class="row">
-        <div class="col-12 col-md-8">
-          <div class="d-flex flex-column">
+        <div class="col-12 col-md-9">
+          <div class="d-flex flex-wrap-m gap-3">
             <div v-for="(news, index) in listNews" :key="news.title" class="mb-4">
               <Card :post="news" @readMore="readMore" />
             </div>
@@ -44,7 +44,7 @@
           </div>
         </div>
         <!-- Category Section -->
-        <div class="col-12 col-md-4 d-flex flex-column gap-3">
+        <div class="col-12 col-md-3 d-flex flex-column gap-3">
           <!-- Search post -->
           <div class="border rounded p-3">
             <h3>Search Post</h3>
@@ -95,7 +95,7 @@
                 class="fav-post d-flex gap-3 cursor-pointer p-2 rounded"
                 @click="readMore(news._id)"
               >
-                <img v-if="news.imgSrc" :src="news.imgSrc" alt="post" />
+                <img v-if="news.imageTheme" :src="news.imageTheme" alt="post" class="w-25" />
                 <div>
                   <h5>{{ news.title }}</h5>
                   <p>{{ news.description }}</p>
