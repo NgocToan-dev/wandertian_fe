@@ -111,11 +111,11 @@
 
 <script setup>
 import { computed, getCurrentInstance, onMounted, ref } from "vue";
-import blogApi from "@/apis/business/blogApi";
 import { useCacheCategoryCombo } from "@/utilities/cache/cacheCategoryCombo";
 import { useCacheTagCombo } from "@/utilities/cache/cacheTagCombo";
 import { useBlogStore } from "@/store/business/blogStore";
 import { useLoadingStore } from "@/store/common/loadingStore";
+import fakeData from './fakeNewsData';
 
 const { proxy } = getCurrentInstance();
 const blogStore = useBlogStore();
@@ -137,8 +137,11 @@ const limit = ref(10);
 //#endregion
 const searchValue = ref("");
 onMounted(async () => {
-  await loadPost();
-  await loadSummary();
+  // await loadPost();
+  // await loadSummary();
+  // await searchPost("");
+  // Fake data for listNews
+  listNews.value = fakeData;
 });
 /**
  * Changes the active page and loads the corresponding posts.

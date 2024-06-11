@@ -9,7 +9,7 @@ import { createPinia } from "pinia";
 import { createVfm } from "vue-final-modal";
 import ToastPlugin from "vue-toast-notification";
 
-import "./style.css";
+import "./style.scss";
 
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
