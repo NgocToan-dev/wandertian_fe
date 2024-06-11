@@ -1,8 +1,9 @@
 const fakeData = [
   {
     _id: 1,
-    title: "Title 1",
-    description: "Description 1",
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates, vero nisi. Reiciendis, delectus ut iure sit voluptatibus explicabo quia dolorem praesentium beatae excepturi, non nostrum, sapiente rem? Libero, molestias. Vero!",
     content: "Content 1",
     category: [
       {
@@ -20,9 +21,9 @@ const fakeData = [
         name: "Tag 2",
       },
     ],
-    image: "https://via.placeholder.com/100",
-    createdAt: "2022-01-01",
-    updatedAt: "2022-01-01",
+    imageTheme: "https://via.placeholder.com/100",
+    createdDate: "2022-01-01",
+    updatedDate: "2022-01-01",
   },
   {
     _id: 2,
@@ -45,9 +46,9 @@ const fakeData = [
         name: "Tag 2",
       },
     ],
-    image: "https://via.placeholder.com/100",
-    createdAt: "2022-01-01",
-    updatedAt: "2022-01-01",
+    imageTheme: "https://via.placeholder.com/100",
+    createdDate: "2022-01-01",
+    updatedDate: "2022-01-01",
   },
   {
     _id: 3,
@@ -70,9 +71,9 @@ const fakeData = [
         name: "Tag 2",
       },
     ],
-    image: "https://via.placeholder.com/100",
-    createdAt: "2022-01-01",
-    updatedAt: "2022-01-01",
+    imageTheme: "https://via.placeholder.com/100",
+    createdDate: "2022-01-01",
+    updatedDate: "2022-01-01",
   },
 ];
 

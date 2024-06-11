@@ -1,30 +1,23 @@
 <template>
-  <div class="post-card border rounded">
-    <div class="card-image">
-      <img :src="post.imageTheme" class="card-img-top" alt="..." />
+  <div class="post-card">
+    <div class="card-image rounded-4 cursor-pointer" @click="readMore">
+      <img :src="post.imageTheme" alt="..." />
     </div>
     <div class="card-body d-flex flex-column justify-content-between">
       <div class="card-body-content">
-        <!-- time -->
-        <div class="time">{{ formatDate(post.createdDate) }}</div>
-        <!-- tag -->
-        <div class="d-flex gap-2 mb-1">
-          <Chip
-            v-for="(tag, index) in post.tag"
-            :key="index"
-            :text="tag.name"
-            type="tag"
-            customChip
-          >
-          </Chip>
-        </div>
-        <h5 class="card-title">{{ post.title }}</h5>
-        <p class="card-text">
-          {{ post.description }}
-        </p>
-      </div>
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="d-flex justify-content-start">
+        <div class="d-flex justify-content-between align-items-center">
+          <!-- tag -->
+          <div class="d-flex gap-2 mb-1">
+            <Chip
+              v-for="(tag, index) in post.tag"
+              :key="index"
+              :text="tag.name"
+              type="tag"
+              customChip
+            >
+            </Chip>
+          </div>
+          <!-- category -->
           <Chip
             v-for="(category, index) in post.category"
             :key="index"
@@ -34,7 +27,29 @@
           >
           </Chip>
         </div>
-        <a class="btn btn-outline-primary btn-sm" @click="readMore">READ MORE</a>
+        <h2 class="card-title cursor-pointer" @click="readMore">{{ post.title }}</h2>
+        <div class="d-flex justify-content-start gap-2 align-items-center my-1">
+          <!-- time -->
+          <div class="time">{{ formatDate(post.createdDate) }}</div>
+        </div>
+
+        <p class="card-text">
+          {{ post.description }}
+        </p>
+      </div>
+      <div class="d-flex justify-content-between align-items-end">
+        <!-- time to read -->
+        <div class="time">
+          <!-- icon opened book -->
+          <span class="me-2">
+            <i class="fas fa-book"></i>
+          </span>
+          <span>{{ post.timeToRead || 1 }} min read</span>
+        </div>
+
+        <button class="btn btn-primary btn-sm rounded-1" @click="readMore">
+          READ MORE
+        </button>
       </div>
     </div>
   </div>
@@ -62,21 +77,34 @@ const formatDate = (date) => {
 
 <style lang="scss" scoped>
 .post-card {
-  width: 300px;
-  height: 400px;
+  width: 100%;
+  height: 200px;
   display: flex;
-  justify-content: space-between;
-  flex-direction: column;
+  align-items: center;
+  gap: 15px;
   .card-image {
-    width: 100%;
-    height: 200px;
+    width: 200px;
+    height: 100%;
+    overflow: hidden;
     img {
       width: 100%;
       height: 100%;
+      
+      &:hover{
+        transform: scale(1.2);
+        transition: transform 0.3s ease-in-out;
+      }
     }
   }
   .card-body {
-    padding: 10px;
+    width: calc(100% - 200px);
+    height: 100%;
+    .card-title{
+      &:hover{
+        text-decoration: underline;
+        color: rgb(82, 77, 77);
+      }
+    }
     p {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -87,6 +115,7 @@ const formatDate = (date) => {
     .time {
       font-size: 12px;
       color: #6c757d;
+      font-family: "Helvetica-medium";
     }
   }
 }
