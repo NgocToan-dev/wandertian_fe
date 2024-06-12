@@ -1,0 +1,7 @@
+export default {
+  PENDING: "PENDING",
+  PUBLISHED: "PUBLISHED",
+  DRAFT: "DRAFT",
+  ARCHIVED: "ARCHIVED",
+  DELETED: "DELETED",
+};

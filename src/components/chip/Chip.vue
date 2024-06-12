@@ -2,7 +2,7 @@
 <template>
   <!-- Chip -->
   <!-- Small font-size -->
-  <div>
+  <div class="chip">
     <div
       v-if="!customChip"
       class="cursor-pointer badge bg-primary py-2 px-2 rounded-5"
@@ -61,5 +61,8 @@ const remove = (e) => {
   .text-link {
     font-size: 11px;
   }
+}
+.chip {
+  font-family: "Helvetica-light", sans-serif;
 }
 </style>

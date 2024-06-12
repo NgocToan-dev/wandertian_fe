@@ -6,9 +6,24 @@
         class="post-section mb-2 d-flex flex-row justify-content-between align-items-center"
       >
         <div>
-          <button @click="saveDraft" class="btn btn-primary me-2">Save</button>
+          <!-- Published button -->
+          <button
+            class="btn btn-primary me-2"
+            @click="save($global.PostStatus.PUBLISHED)"
+          >
+            <i class="fas fa-check"></i> Publish
+          </button>
+          <!-- Save draft button -->
+          <button
+            @click="save($global.PostStatus.DRAFT)"
+            class="btn btn-outline-primary me-2"
+          >
+            Save Draft
+          </button>
           <!-- Cancel button -->
-          <button class="btn btn-outline-primary" @click="cancelEditPost">Cancel</button>
+          <button class="btn btn-outline-secondary" @click="cancelEditPost">
+            Cancel
+          </button>
         </div>
       </div>
 
@@ -82,6 +97,7 @@ import { useCacheCategoryCombo } from "../../../utilities/cache/cacheCategoryCom
 import { useCacheTagCombo } from "../../../utilities/cache/cacheTagCombo";
 import EditMode from "@/utilities/enum/EditMode";
 import { useLoadingStore } from "@/store/common/loadingStore";
+import PostStatus from "@/utilities/enum/PostStatus";
 
 const { proxy } = getCurrentInstance();
 const post = reactive({});
@@ -112,7 +128,12 @@ onMounted(async () => {
  * Saves the draft of the post.
  * @async
  */
-const saveDraft = async () => {
+const save = async (mode) => {
+  if (mode === PostStatus.PUBLISHED) {
+    post.postStatus = PostStatus.PUBLISHED;
+  } else {
+    post.postStatus = PostStatus.DRAFT;
+  }
   if (editMode.value === EditMode.CREATE) {
     await createPost();
   } else {

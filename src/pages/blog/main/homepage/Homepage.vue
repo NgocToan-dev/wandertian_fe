@@ -60,31 +60,6 @@
               </button>
             </div>
           </div>
-          <div class="border rounded p-3">
-            <h3>Category</h3>
-            <!-- list category chip -->
-            <div class="d-flex flex-wrap mt-3 gap-2">
-              <Chip
-                v-for="(category, index) in cacheCategoryCombo.data"
-                :key="index"
-                :text="category[cacheCategoryCombo.displayField]"
-                type="category"
-              />
-            </div>
-          </div>
-          <!-- List Tag -->
-          <div class="border rounded p-3">
-            <h3>Tag</h3>
-            <!-- list tag chip -->
-            <div class="d-flex flex-wrap mt-3 gap-2">
-              <Chip
-                v-for="(category, index) in cacheTagCombo.data"
-                :key="index"
-                :text="category[cacheTagCombo.displayField]"
-                type="tag"
-              />
-            </div>
-          </div>
           <!-- Favorite Posts -->
           <div class="border rounded p-3">
             <h3>Favorite Posts</h3>
@@ -95,9 +70,24 @@
                 class="fav-post d-flex gap-3 cursor-pointer p-2 rounded"
                 @click="readMore(news._id)"
               >
-                <img v-if="news.imageTheme" :src="news.imageTheme" alt="post" class="w-25" />
-                <div>
+                <div class="fav-post-image">
+                  <img v-if="news.imageTheme" :src="news.imageTheme" alt="post" />
+                </div>
+                <div
+                  class="fav-post-body d-flex h-100 flex-column justify-content-between"
+                >
                   <h5>{{ news.title }}</h5>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="time">{{ formatDate(news.createdDate) }}</div>
+                    <!-- time to read -->
+                    <div class="time">
+                      <!-- icon opened book -->
+                      <span class="me-2">
+                        <i class="fas fa-book"></i>
+                      </span>
+                      <span>{{ news.timeToRead || 1 }} min read</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -110,19 +100,11 @@
 
 <script setup>
 import { computed, getCurrentInstance, onMounted, ref } from "vue";
-import { useCacheCategoryCombo } from "@/utilities/cache/cacheCategoryCombo";
-import { useCacheTagCombo } from "@/utilities/cache/cacheTagCombo";
 import { useBlogStore } from "@/store/business/blogStore";
 import { useLoadingStore } from "@/store/common/loadingStore";
-import fakeData from './fakeNewsData';
 
 const { proxy } = getCurrentInstance();
 const blogStore = useBlogStore();
-//#region category
-const { cacheCategoryCombo } = useCacheCategoryCombo();
-//#endregion
-//#region tag
-const { cacheTagCombo } = useCacheTagCombo();
 //#region news
 const listNews = ref([]);
 const listFavNews = computed(() => listNews.value.slice(0, 3));
@@ -136,11 +118,10 @@ const limit = ref(10);
 //#endregion
 const searchValue = ref("");
 onMounted(async () => {
-  // await loadPost();
-  // await loadSummary();
-  // await searchPost("");
+  await loadPost();
+  await loadSummary();
   // Fake data for listNews
-  listNews.value = fakeData;
+  // listNews.value = fakeData;
 });
 /**
  * Changes the active page and loads the corresponding posts.
@@ -172,6 +153,7 @@ const loadPost = async () => {
       page: activePage.value,
       limit: limit.value,
       filter: searchValue.value,
+      filterStatus: proxy.$global.PostStatus.PUBLISHED,
     });
     if (res) {
       listNews.value = res;
@@ -198,6 +180,12 @@ const loadSummary = async () => {
 const readMore = (id) => {
   proxy.$router.push({ name: "PostDetail", params: { id } });
 };
+
+const formatDate = (date) => {
+  // en-US format
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  return new Date(date).toLocaleDateString("en-US", options);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -210,8 +198,24 @@ p {
   -webkit-box-orient: vertical;
 }
 .fav-post {
+  height: 100px;
+  .fav-post-image {
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    width: 100px;
+  }
+  .fav-post-body {
+    width: calc(100% - 100px);
+  }
   &:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .time {
+    font-size: 12px;
+    color: #6c757d;
+    font-family: "Helvetica-medium";
   }
 }
 </style>
