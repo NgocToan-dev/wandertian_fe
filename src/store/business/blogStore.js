@@ -14,8 +14,8 @@ export const useBlogStore = defineStore("blogStore", {
     async searchPostByTag(tag) {
       return await blogApi.searchPostByTag(tag);
     },
-    async searchPostByCategory(category) {
-      return await blogApi.searchPostByCategory(category);
+    async searchPostByCategory(payload) {
+      return await blogApi.searchPostByCategory(payload);
     },
   },
 });

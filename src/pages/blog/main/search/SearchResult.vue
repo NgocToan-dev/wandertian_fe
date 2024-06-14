@@ -93,7 +93,7 @@ onMounted(async () => {
           await searchPostByTag(searchValue.value);
           break;
         case "category":
-          await searchPostByCategory(searchValue.value);
+          await searchPostByCategory({category: searchValue.value});
           break;
         default:
           await loadPost();

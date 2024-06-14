@@ -80,6 +80,12 @@ class BaseApi {
     const response = await httpClient.delete(request);
     return response.data;
   }
+  queryBuilder(payload) {
+    if (payload) {
+      return "?" + new URLSearchParams(payload).toString();
+    }
+    return "";
+  }
 }
 
 export default BaseApi;

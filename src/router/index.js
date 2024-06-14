@@ -17,16 +17,15 @@ const router = createRouter({
 });
 router.beforeEach((to, from, next) => {
   // Redirect to login page if user not logged in
-  // if(to.name == 'login'){
-  //   next();
-  //   return;
-  // }
-  // if (!localStorage.getItem("token")) {
-  //   next({ name: "login" });
-  // } else {
-  //   next();
-  // }
-  next()
+  if(to.name == 'login'){
+    next();
+    return;
+  }
+  if (!localStorage.getItem("token")) {
+    next({ name: "login" });
+  } else {
+    next();
+  }
 });
 
 export default router;

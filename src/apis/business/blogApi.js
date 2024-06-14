@@ -11,12 +11,13 @@ class BlogApi extends BuApi {
     const response = await httpClient.get(request);
     return response.data;
   }
-  async searchPostByCategory(category) {
+  async searchPostByCategory(payload) {
     const request = {
-      url: [this.getApiUrl(), "category", `${category}`].join("/"),
+      url: [this.getApiUrl(), "category"].join("/"),
+      data: payload,
     };
 
-    const response = await httpClient.get(request);
+    const response = await httpClient.post(request);
     return response.data;
   }
 }
