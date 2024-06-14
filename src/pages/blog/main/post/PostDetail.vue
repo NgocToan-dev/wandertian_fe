@@ -12,7 +12,12 @@
           <hr />
           <h5>Category</h5>
           <div class="d-flex gap-2 mt-1 mb-3">
-            <Chip v-for="(category, index) in post.category" :key="index" :text="category.name" type="category">
+            <Chip
+              v-for="(category, index) in post.category"
+              :key="index"
+              :text="category.name"
+              type="category"
+            >
             </Chip>
           </div>
         </div>
@@ -21,7 +26,12 @@
           <hr />
           <h5>Tag</h5>
           <div class="d-flex gap-2 mt-3">
-            <Chip v-for="(tag, index) in post.tag" :key="index" :text="tag.name" type="tag">
+            <Chip
+              v-for="(tag, index) in post.tag"
+              :key="index"
+              :text="tag.name"
+              type="tag"
+            >
             </Chip>
           </div>
         </div>
@@ -30,18 +40,24 @@
           <hr />
           <h5>Leave comments</h5>
           <div class="d-flex gap-2 mt-3">
-            <Comment :post="post"/>
+            <Comment :post="post" />
           </div>
         </div>
       </div>
       <div class="col-12 col-md-4 d-flex flex-column gap-3">
         <h5>Relevant Posts</h5>
-        <div v-for="(news, index) in relevantNews" :key="index" class="relevant-post d-flex gap-3 cursor-pointer p-2 rounded"
-          @click="readMore(news._id)">
+        <div
+          v-for="(news, index) in relevantNews"
+          :key="index"
+          class="relevant-post d-flex gap-3 cursor-pointer p-2 rounded"
+          @click="readMore(news._id)"
+        >
           <div class="relevant-post-image">
             <img v-if="news.imageTheme" :src="news.imageTheme" alt="post" />
           </div>
-          <div class="relevant-post-body d-flex h-100 flex-column justify-content-between">
+          <div
+            class="relevant-post-body d-flex h-100 flex-column justify-content-between"
+          >
             <h5>{{ news.title }}</h5>
             <div class="d-flex justify-content-between align-items-center">
               <div class="time">{{ formatDate(news.createdDate) }}</div>
@@ -66,6 +82,7 @@ import { getCurrentInstance, onMounted, reactive } from "vue";
 import Comment from "@/components/comment/Comment.vue";
 import blogApi from "@/apis/business/blogApi";
 import { useLoadingStore } from "@/store/common/loadingStore";
+import commentApi from "@/apis/business/commentApi";
 const { proxy } = getCurrentInstance();
 
 const post = reactive({});
@@ -83,10 +100,12 @@ onMounted(async () => {
     const payload = {
       category: post.category[0].name,
       except: [post._id],
-      limit: 5
+      limit: 5,
     };
     const news = await blogApi.searchPostByCategory(payload);
     Object.assign(relevantNews, news);
+    const commentsRes = await commentApi.getCommentsByPostId(post._id);
+    post.comments = commentsRes;
   } finally {
     mask.hide();
   }
@@ -100,7 +119,6 @@ const formatDate = (date) => {
 </script>
 
 <style lang="scss" scoped>
-
 .time {
   color: #6c757d;
   font-size: 12px;
