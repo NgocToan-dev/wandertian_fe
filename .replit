@@ -1,0 +1,9 @@
+modules = ["vue-node-20", "nodejs-20", "web"]
+
+[nix]
+channel = "stable-23_11"
+
+[[ports]]
+localPort = 3000
+externalPort = 3001
+exposeLocalhost = true

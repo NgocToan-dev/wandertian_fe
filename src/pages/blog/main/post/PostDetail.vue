@@ -4,7 +4,7 @@
     <div class="time">{{ formatDate(post.createdDate) }}</div>
     <h2>{{ post.title }}</h2>
     <p>{{ post.description }}</p>
-    <QuillEditor theme="bubble" readOnly :content="post.contents" content-type="html" />
+    <RichEditor v-model:content="post.contents" :readOnly="true"/>
     <!-- list of categories -->
     <div class="category-section" v-if="post.category?.length > 0">
       <hr />

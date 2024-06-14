@@ -51,7 +51,7 @@
       </div>
 
       <!-- Quill editor for content -->
-      <QuillEditor toolbar="full" v-model:content="post.contents" content-type="html" />
+      <RichEditor v-model:content="post.contents"/>
     </div>
     <!-- Properties section -->
     <div class="d-flex flex-column gap-3 border rounded pt-2 col-md-3">
@@ -100,6 +100,7 @@ import { useLoadingStore } from "@/store/common/loadingStore";
 import PostStatus from "@/utilities/enum/PostStatus";
 
 const { proxy } = getCurrentInstance();
+const mask = useLoadingStore();
 const post = reactive({});
 const { cacheCategoryCombo } = useCacheCategoryCombo();
 const { cacheTagCombo } = useCacheTagCombo();
@@ -114,7 +115,7 @@ onMounted(async () => {
     editMode.value = EditMode.CREATE;
     return;
   }
-  const mask = useLoadingStore();
+
   try {
     mask.show();
     const res = await blogApi.getById(proxy.$route.params.id);
@@ -134,10 +135,15 @@ const save = async (mode) => {
   } else {
     post.postStatus = PostStatus.DRAFT;
   }
+  try{
+    mask.show();
   if (editMode.value === EditMode.CREATE) {
     await createPost();
   } else {
     await updatePost();
+  }
+  }finally{
+    mask.hide();
   }
 };
 /**
