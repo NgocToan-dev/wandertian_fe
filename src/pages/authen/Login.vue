@@ -31,23 +31,21 @@
 
     <!-- Email input -->
     <div data-mdb-input-init class="form-outline mb-4">
-      <label class="form-label" for="form3Example3">Email address</label>
-      <input
+      <BaseInput
         type="email"
+        label="Email address"
         id="form3Example3"
-        class="form-control"
-        v-model="model.username"
+        v-model="model.email"
         placeholder="Enter a valid email address"
       />
     </div>
 
     <!-- Password input -->
     <div data-mdb-input-init class="form-outline mb-3">
-      <label class="form-label" for="form3Example4">Password</label>
-      <input
+      <BaseInput
         type="password"
+        label="Password"
         id="form3Example4"
-        class="form-control"
         v-model="model.password"
         placeholder="Enter password"
       />
@@ -81,7 +79,7 @@
       </button>
       <p class="small fw-bold mt-2 pt-1 mb-0">
         Don't have an account?
-        <a class="link-danger cursor-pointer" @click="changeFormMode">Register</a>
+        <a class="link-danger cursor-pointer" @click="goToRegister">Register</a>
       </p>
     </div>
   </div>
@@ -89,20 +87,27 @@
 
 <script setup>
 import userApi from "@/apis/system/userApi";
+import BaseInput from "@/components/input/BaseInput.vue";
 import { useContextStore } from "@/store/common/contextStore";
 import { useLoadingStore } from "@/store/common/loadingStore";
 import commonFn from "@/utilities/commonFn";
-import { ref, defineEmits, getCurrentInstance } from "vue";
+import { ref, defineEmits, getCurrentInstance, onMounted } from "vue";
 const { proxy } = getCurrentInstance();
 const contextStore = useContextStore();
 const mask = useLoadingStore();
+
 const model = ref({
-  username: "",
+  email: "",
   password: "",
 });
+
+onMounted(() => {
+  model.value.email = proxy.$route.query.email || "";
+});
+
 const emit = defineEmits(["changeFormMode"]);
-const changeFormMode = () => {
-  emit("changeFormMode");
+const goToRegister = () => {
+  proxy.$router.push("/register");
 };
 const login = async () => {
   try {

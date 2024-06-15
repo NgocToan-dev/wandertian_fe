@@ -14,8 +14,7 @@
           />
         </div>
         <div class="vertical-divider"></div>
-        <Login v-if="loginMode" @changeFormMode="changeFormMode"/>
-        <Register v-else @changeFormMode="changeFormMode"/>
+        <RouterView />
       </div>
     </div>
   </section>
@@ -23,13 +22,8 @@
 
 <script setup>
 import { ref } from "vue";
-import Login from "./Login.vue";
-import Register from "./Register.vue";
 
 const loginMode = ref(true);
-const changeFormMode = () => {
-  loginMode.value = !loginMode.value;
-};
 </script>
 
 <style lang="scss" scoped>

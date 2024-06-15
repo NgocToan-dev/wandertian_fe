@@ -17,7 +17,7 @@ const logout = (router) => {
     document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT`;
   }
 
-  router.push({ name: "login" });
+  router.push({ path: "/login" });
 };
 
 const isLogin = () => {
@@ -37,17 +37,52 @@ const checkAuth = () => {
 };
 
 /**
- * Gets the value of a cookie with the specified name.
+ * Gets the value of a cookie with the specified name
+ * Check expired cookie
+ * @param {string} key - The name of the cookie.
+ * @returns {string} The value of the cookie.
+ */
+/**
+ * Gets the value of a cookie with the specified name
+ * Check expired cookie
  * @param {string} key - The name of the cookie.
  * @returns {string} The value of the cookie.
  */
 const getCookie = (key) => {
-  const cookies = document.cookie.split(";").map((cookie) => {
-    const arr = cookie.split("=");
-    // remove space
-    return [arr[0].trim(), arr[1]];
-  });
-  return Object.fromEntries(cookies)[key.trim()];
+  const name = `${key}=`;
+  const decodedCookie = decodeURIComponent(document.cookie);
+  const ca = decodedCookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) === 0) {
+      const cookieValue = c.substring(name.length, c.length);
+      const expires = getCookieExpiration(c);
+      if (expires && new Date(expires) < new Date()) {
+        return "";
+      }
+      return cookieValue;
+    }
+  }
+  return "";
+};
+
+/**
+ * Gets the expiration date of a cookie.
+ * @param {string} cookie - The cookie string.
+ * @returns {string} The expiration date of the cookie.
+ */
+const getCookieExpiration = (cookie) => {
+  const cookieParts = cookie.split(";");
+  for (let i = 0; i < cookieParts.length; i++) {
+    const part = cookieParts[i].trim();
+    if (part.startsWith("expires=")) {
+      return part.substring("expires=".length);
+    }
+  }
+  return "";
 };
 /**
  * Sets a cookie with the specified name, value, and expiration days.

@@ -36,7 +36,7 @@
           </div>
         </div>
         <!-- Tag -->
-        <div class="tag-section" v-if="post.tag?.length > 0">
+        <div class="comment-section">
           <hr />
           <h5>Leave comments</h5>
           <div class="d-flex gap-2 mt-3">

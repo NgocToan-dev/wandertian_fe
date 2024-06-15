@@ -11,6 +11,13 @@ class UserApi extends SysApi {
     };
     return await httpClient.post(request);
   }
+  async signUp(data) {
+    const request = {
+      url: [this.getApiUrl(), "signUp"].join("/"),
+      data: data,
+    };
+    return await httpClient.post(request);
+  }
 }
 
 export default new UserApi();

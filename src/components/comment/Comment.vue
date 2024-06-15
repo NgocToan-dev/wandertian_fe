@@ -1,87 +1,60 @@
 <template>
   <div class="w-100">
-    <div class="card">
-      <div v-for="comment in post.comments" :key="comment._id" class="mb-2">
-        <div class="card-body d-flex gap-3">
-          <!-- avatar -->
-          <img
-            class="rounded-circle"
-            src="https://via.placeholder.com/50"
-            alt="avatar"
-            width="50"
-            height="50"
-          />
-          <div class="flex-grow-1">
-            <div class="w-100 d-flex justify-content-between align-items-start">
-              <p class="card-text">{{ comment.content }}</p>
-              <!-- delete button -->
-              <div
-                v-if="comment.user_id === context?.user_id"
-                class="cursor-pointer text-danger"
-                @click="deleteComment(comment._id)"
+    <!-- TODO: Find the way to backtrack tree for CommentDetail -->
+    <div class="card pe-3" v-if="post.comments?.length > 0">
+      <CommentDetail
+        v-for="comment in post.comments"
+        :key="comment._id"
+        class="mb-2"
+        :comment="comment"
+        v-model:showReplyForm="showReplyForm"
+        @postComment="postComment"
+        @reloadReplies="reloadReplies"
+      >
+        <template #replies>
+          <CommentDetail
+            v-for="reply in comment.replies"
+            :key="reply._id"
+            :comment="reply"
+            v-model:showReplyForm="showReplyForm"
+            @reloadReplies="reloadReplies"
+          >
+            <template #replies>
+              <CommentDetail
+                v-for="subReply in reply.replies"
+                :key="subReply._id"
+                :comment="subReply"
+                v-model:showReplyForm="showReplyForm"
+                @reloadReplies="reloadReplies"
               >
-                <!-- icon delete -->
-                <i class="fas fa-trash"></i>
-              </div>
-            </div>
-            <div class="w-100 d-flex justify-content-between align-items-end">
-              <p class="card-subtitle text-muted">Posted by: {{ comment.user_id }}</p>
-              <div
-                class="btn-reply d-flex gap-2 align-items-center"
-                @click="toggleReplyForm(comment._id)"
-              >
-                <!-- icon reply -->
-                <i class="fas fa-reply"></i>
-                <span>Reply</span>
-              </div>
-            </div>
-
-            <form
-              v-if="showReplyForm[comment._id]"
-              @submit.prevent="postReply(comment._id)"
-              class="mt-3 form-control d-flex align-items-center"
-            >
-              <textarea
-                v-model="commentContent"
-                class="comment-area flex-grow-1"
-                placeholder="Reply here"
-              ></textarea>
-              <button class="btn-send" type="submit">
-                <!-- loading gif -->
-                <img v-if="sendingComment" src="@/assets/img/loading.gif" alt="loading" />
-                <img
-                  v-if="!sendingComment"
-                  src="@/assets/img/paper-plane.png"
-                  alt="send-button"
-                />
-              </button>
-            </form>
-
-            <!-- Replies -->
-            <div v-if="comment.replies?.length > 0" class="mt-3">
-              <div v-for="reply in comment.replies" :key="reply._id" class="card mt-2">
-                <div class="card-body">
-                  <p class="card-text">{{ reply.content }}</p>
-                  <p class="card-subtitle mb-2 text-muted">
-                    Posted by: {{ reply.userId }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                <template #replies>
+                  <CommentDetail
+                    v-for="subSubReply in subReply.replies"
+                    :key="subSubReply._id"
+                    :comment="subSubReply"
+                    v-model:showReplyForm="showReplyForm"
+                    @reloadReplies="reloadReplies"
+                  >
+                  </CommentDetail>
+                </template>
+              </CommentDetail>
+            </template>
+          </CommentDetail>
+        </template>
+      </CommentDetail>
     </div>
 
     <!-- New Comment Form -->
     <form
       @submit.prevent="postComment"
       class="mt-3 form-control d-flex align-items-center"
+      :class="{ 'error-comment': errorComment }"
     >
       <textarea
         v-model="commentContent"
         class="comment-area flex-grow-1"
         placeholder="Leave a comment here"
+        @blur="errorComment = false"
       ></textarea>
       <button class="btn-send" type="submit">
         <!-- loading gif -->
@@ -101,10 +74,12 @@ import { getCurrentInstance, onMounted, ref } from "vue";
 import CommentApi from "@/apis/business/commentApi";
 import { useContextStore } from "@/store/common/contextStore";
 import { showInfo } from "@/utilities/modalRegister/messageBox";
+import CommentDetail from "./CommentDetail.vue";
 
 const { proxy } = getCurrentInstance();
 const contextStore = useContextStore();
 const context = contextStore.getContext;
+const showReplyForm = ref({});
 const props = defineProps({
   post: {
     type: Object,
@@ -113,21 +88,37 @@ const props = defineProps({
 });
 const commentContent = ref("");
 const sendingComment = ref(false);
-const replyContent = ref("");
-const showReplyForm = ref({}); // Object to track reply form visibility
 
-const toggleReplyForm = (commentId) => {
-  // Example: Toggle reply form visibility
-  showReplyForm.value[commentId] = !showReplyForm.value[commentId];
-};
+const errorComment = ref(false);
 
-const postComment = async () => {
+const postComment = async (event) => {
+  // check if logged in or not before posting comment
+  if (!context || !context.user_id) {
+    showInfo(
+      "Please login to post comment. Do you want to login?",
+      "Login Required",
+      () => {
+        proxy.$router.push("/login");
+      }
+    );
+    return;
+  }
+  if (!commentContent.value) {
+    errorComment.value = true;
+    // find the first textarea and focus on it
+    const textarea = event.target.querySelector("textarea");
+    proxy.$nextTick(() => {
+      textarea.focus();
+    });
+    return;
+  }
   // Example: Send new comment to backend
   const payload = {
     post_id: props.post._id,
     user_id: context.user_id,
+    username: context.username,
     content: commentContent.value,
-    replies: [],
+    createdDate: new Date(),
   };
   try {
     sendingComment.value = true;
@@ -143,21 +134,34 @@ const postComment = async () => {
     sendingComment.value = false;
   }
 };
-const deleteComment = async (commentId) => {
-  // Example: Delete comment by commentId
-  showInfo(
-    "Are you sure you want to delete this comment?",
-    "Delete Comment",
-    async () => {
-      const res = await CommentApi.delete(commentId);
-      if (res) {
-        // reload comments
-        props.post.comments = await CommentApi.getCommentsByPostId(props.post._id);
-      } else {
-        proxy.$toast.error("Failed to delete comment");
+const reloadReplies = async (commentId, isClear) => {
+  // Example: Get replies by commentId
+  const replies = await CommentApi.getRepliesByCommentId(commentId);
+  // find parent of replies in comment or replies of comment
+  const parentComment = props.post.comments.find((comment) => comment._id === commentId);
+  if (parentComment) {
+    parentComment.replies = isClear ? [] : replies;
+  } else {
+    const parentReplies = findParentComment(props.post.comments, commentId);
+    if (parentReplies) {
+      parentReplies.replies = isClear ? [] : replies;
+    }
+  }
+};
+
+// use backtracking to find the parent comment of list replies
+const findParentComment = (comments, commentId) => {
+  for (const comment of comments) {
+    if (comment._id === commentId) {
+      return comment;
+    }
+    if (comment.replies) {
+      const parentComment = findParentComment(comment.replies, commentId);
+      if (parentComment) {
+        return parentComment;
       }
     }
-  );
+  }
 };
 </script>
 
@@ -168,6 +172,9 @@ const deleteComment = async (commentId) => {
   outline: none;
   resize: none;
   max-height: 150px;
+}
+.error-comment {
+  border: 1px solid red;
 }
 .btn-send {
   background: none;
@@ -181,17 +188,5 @@ const deleteComment = async (commentId) => {
     width: 100%;
     object-fit: cover;
   }
-}
-.btn-reply {
-  cursor: pointer;
-  color: #007bff;
-  span {
-    font-size: 12px;
-    font-weight: 500;
-  }
-}
-.card-subtitle {
-  font-size: 11px;
-  color: #6c757d;
 }
 </style>

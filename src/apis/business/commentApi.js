@@ -18,6 +18,14 @@ class CommentApi extends BuApi {
     const response = await httpClient.get(request);
     return response.data;
   }
+  async getRepliesByCommentId(commentId) {
+    const request = {
+      url: [this.getApiUrl(), commentId, "replies"].join("/"),
+    };
+
+    const response = await httpClient.get(request);
+    return response.data;
+  }
 }
 
 export default new CommentApi();
