@@ -51,7 +51,7 @@
       </div>
 
       <!-- Quill editor for content -->
-      <RichEditor v-model:content="post.contents"/>
+      <RichEditor v-model:content="post.contents" />
     </div>
     <!-- Properties section -->
     <div class="d-flex flex-column gap-3 border rounded pt-2 col-md-3">
@@ -135,14 +135,14 @@ const save = async (mode) => {
   } else {
     post.postStatus = PostStatus.DRAFT;
   }
-  try{
+  try {
     mask.show();
-  if (editMode.value === EditMode.CREATE) {
-    await createPost();
-  } else {
-    await updatePost();
-  }
-  }finally{
+    if (editMode.value === EditMode.CREATE) {
+      await createPost();
+    } else {
+      await updatePost();
+    }
+  } finally {
     mask.hide();
   }
 };
@@ -155,7 +155,6 @@ const save = async (mode) => {
 const createPost = async () => {
   post.createdDate = new Date();
   await blogApi.create(post);
-  proxy.$router.push({ path: "/admin/post" });
 };
 /**
  * Updates the post.
@@ -166,7 +165,6 @@ const createPost = async () => {
 const updatePost = async () => {
   post.updatedDate = new Date();
   await blogApi.update(post);
-  proxy.$router.push({ path: "/admin/post" });
 };
 const cancelEditPost = () => {
   proxy.$router.push({ path: "/admin/post" });

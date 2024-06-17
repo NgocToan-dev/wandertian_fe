@@ -1,19 +1,18 @@
 <template>
-  <div :class="{ 'readOnlyView': readOnly }">
+  <div :class="{ readOnlyView: readOnly }">
     <froala :tag="'textarea'" :config="config" v-model:value="model" :disabled="readOnly">
     </froala>
   </div>
 </template>
 
 <script setup>
-
-const model = defineModel('content');
+const model = defineModel("content");
 
 const props = defineProps({
   readOnly: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 const config = {
   events: {
@@ -25,13 +24,10 @@ const config = {
       } else {
         editor.edit.on(); // Enable editing on non-read-only change
       }
-    }
+    },
   },
-  pluginsEnabled: ['table', 'align', 'image', 'video'] // Enable the table plugin
 };
-
 </script>
-
 
 <style lang="scss">
 #fr-logo {
@@ -41,7 +37,7 @@ const config = {
 .readOnlyView {
   .fr-wrapper {
     border: none !important;
-    .fr-view{
+    .fr-view {
       padding: 0 !important;
     }
   }
@@ -51,4 +47,3 @@ const config = {
   }
 }
 </style>
-

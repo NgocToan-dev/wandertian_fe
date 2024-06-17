@@ -81,7 +81,8 @@ const setFormatType = (value, dataType) => {
   switch (dataType) {
     case "date":
       if (!(typeof value == "string")) return "";
-      return new Date(value).toLocaleDateString();
+      // vietnamese date format
+      return new Date(value).toLocaleDateString("vi-VN");
     default:
       return value;
   }
