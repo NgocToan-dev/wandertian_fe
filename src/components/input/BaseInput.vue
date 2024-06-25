@@ -1,14 +1,8 @@
 <template>
   <div>
     <label>{{ label }} <span v-if="isRequired" class="text-danger">*</span></label>
-    <input
-      ref="input"
-      class="form-control"
-      v-model="modelValue"
-      :placeholder="placeholder"
-      :type="type"
-      @blur="validateInput"
-    />
+    <input ref="input" class="form-control" v-model="modelValue" :placeholder="placeholder" :type="type"
+      @blur="validateInput" />
     <!-- error warning -->
     <div v-if="error" class="text-danger error-text">{{ error }}</div>
   </div>
@@ -51,6 +45,7 @@ const validateEmail = (email) => {
   const re = /\S+@\S+\.\S+/;
   return re.test(email);
 };
+
 </script>
 
 <style lang="scss" scoped>

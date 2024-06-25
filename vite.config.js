@@ -21,6 +21,9 @@ export default defineConfig({
       },
     }),
   ],
+  test: {
+    environment: 'happy-dom'
+  },
   define: { "process.env": {} },
   resolve: {
     alias: {
