@@ -101,6 +101,40 @@ const setCookie = (name, value, days) => {
   document.cookie = `${name}=${encodeURIComponent(value)};${expires};path=/`;
 };
 
+const timeFromNow = (createdDate) => {
+    // Parse the createdDate into a Date object
+    const createdDateObj = new Date(createdDate);
+
+    // Get the current date and time
+    const now = new Date();
+
+    // Calculate the difference in milliseconds
+    const differenceInMilliseconds = now - createdDateObj;
+
+    // Convert milliseconds to a more readable format
+    const seconds = Math.floor(differenceInMilliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const months = Math.floor(days / 30); // Approximate month duration
+    const years = Math.floor(months / 12);
+
+    // Determine the most appropriate unit to display
+    if (years > 0) {
+        return `${years} year${years !== 1 ? 's' : ''} ago`;
+    } else if (months > 0) {
+        return `${months} month${months !== 1 ? 's' : ''} ago`;
+    } else if (days > 0) {
+        return `${days} day${days !== 1 ? 's' : ''} ago`;
+    } else if (hours > 0) {
+        return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    } else if (minutes > 0) {
+        return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+    } else {
+        return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+    }
+}
+
 export default {
   backToHome,
   logout,
@@ -108,4 +142,5 @@ export default {
   emptyObjectId,
   checkAuth,
   setCookie,
+  timeFromNow
 };

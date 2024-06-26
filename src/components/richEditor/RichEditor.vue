@@ -1,7 +1,8 @@
 <template>
-  <div :class="{ readOnlyView: readOnly }">
-    <froala :tag="'textarea'" :config="config" v-model:value="model" :disabled="readOnly">
+  <div>
+    <froala v-if="!readOnly" :config="config" v-model:value="model">
     </froala>
+    <froalaView v-if="readOnly" v-model:value="model"/>
   </div>
 </template>
 
@@ -15,6 +16,11 @@ const props = defineProps({
   },
 });
 const config = {
+  tabSpaces: 4,
+  pastePlain: true,
+  spellcheck: false,
+  charCounterCount: false,
+  placeholderText: "How's it going today? Do you have fun? Any story?",
   events: {
     initialized: function () {
       const editor = this;
@@ -34,16 +40,5 @@ const config = {
   display: none;
 }
 
-.readOnlyView {
-  .fr-wrapper {
-    border: none !important;
-    .fr-view {
-      padding: 0 !important;
-    }
-  }
 
-  .fr-second-toolbar {
-    border: none !important;
-  }
-}
 </style>
