@@ -4,44 +4,7 @@
       <!-- Post Section -->
       <div class="row">
         <div class="col-12 col-md-8">
-          <div class="d-flex flex-column gap-4">
-            <div v-for="(news, index) in listNews" :key="news.title" class="mb-4">
-              <Card :post="news" @readMore="readMore" />
-            </div>
-          </div>
-          <!-- Card Pagination -->
-          <div
-            class="d-flex justify-content-start mt-3 flex-row gap-2"
-            v-if="totalPages > 1"
-          >
-            <button
-              class="btn btn-primary"
-              :class="{ disabled: isFirstPage }"
-              @click="changePage(activePage - 1)"
-            >
-              <!-- Icon back -->
-              <i class="fas fa-arrow-left"></i>
-            </button>
-            <!-- Page section v-for -->
-            <div class="d-flex flex-row gap-1">
-              <button
-                v-for="(page, index) in totalPages"
-                :key="index"
-                class="btn btn-outline-primary"
-                :class="{ 'bg-primary text-white': index == activePage }"
-                @click="changePage(page - 1)"
-              >
-                {{ page }}
-              </button>
-            </div>
-            <button
-              class="btn btn-primary"
-              :class="{ disabled: isLastPage }"
-              @click="changePage(activePage + 1)"
-            >
-              <i class="fas fa-arrow-right"></i>
-            </button>
-          </div>
+          <CardList :store="blogStore"/>
         </div>
         <!-- Category Section -->
         <div class="col-12 col-md-4 d-flex flex-column gap-3">
@@ -99,78 +62,23 @@
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, onMounted, ref } from "vue";
+import CardList from "@/components/card/CardList.vue";
 import { useBlogStore } from "@/store/business/blogStore";
-import { useLoadingStore } from "@/store/common/loadingStore";
+import { computed, getCurrentInstance, onMounted, ref } from "vue";
 
 const { proxy } = getCurrentInstance();
 const blogStore = useBlogStore();
+
 //#region news
-const listNews = ref([]);
-const listFavNews = computed(() => listNews.value.slice(0, 3));
-//#endregion
-//#region pagination
-const activePage = ref(0);
-const isFirstPage = computed(() => activePage.value === 0);
-const isLastPage = computed(() => activePage.value === totalPages.value - 1);
-const totalPages = ref(1);
-const limit = ref(10);
+const listFavNews = ref([]);
 //#endregion
 const searchValue = ref("");
-onMounted(async () => {
-  await loadPost();
-  await loadSummary();
-  // Fake data for listNews
-  // listNews.value = fakeData;
-});
-/**
- * Changes the active page and loads the corresponding posts.
- * @param {number} page - The page number to navigate to.
- */
-const changePage = async (page) => {
-  if (page < 0 || page >= totalPages.value || page === activePage.value) return;
-  activePage.value = page;
-  await loadPost();
-  // scroll to top
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
 
 /**
  * Searches for posts based on the search value and loads the results.
  */
 const searchPost = async () => {
   proxy.$router.push({ name: "SearchResult", query: { search: searchValue.value } });
-};
-
-/**
- * Loads the posts based on the active page and search value.
- */
-const loadPost = async () => {
-  const mask = useLoadingStore();
-  try {
-    mask.show();
-    const res = await blogStore.load({
-      page: activePage.value,
-      limit: limit.value,
-      filter: searchValue.value,
-      filterStatus: proxy.$global.PostStatus.PUBLISHED,
-    });
-    if (res) {
-      listNews.value = res;
-    }
-  } finally {
-    mask.hide();
-  }
-};
-
-/**
- * Loads the summary of posts based on the search value.
- */
-const loadSummary = async () => {
-  const res = await blogStore.loadSummary({ filter: searchValue.value });
-  if (res) {
-    totalPages.value = Math.ceil(res.total / limit.value);
-  }
 };
 
 /**

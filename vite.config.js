@@ -2,7 +2,7 @@
 import { defineConfig } from "vite";
 import { fileURLToPath, URL } from "node:url";
 import vue from "@vitejs/plugin-vue";
-import svgLoader from 'vite-svg-loader'; // Import the SVG loader
+import svgLoader from "vite-svg-loader"; // Import the SVG loader
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -32,6 +32,7 @@ export default defineConfig({
     extensions: [".js", ".json", ".jsx", ".mjs", ".ts", ".tsx", ".vue"],
   },
   server: {
+    host: "0.0.0.0",
     port: 3000,
   },
   build: {

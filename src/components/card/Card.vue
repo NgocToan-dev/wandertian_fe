@@ -1,7 +1,19 @@
 <template>
   <div class="post-card">
-    <div class="card-image rounded-4 cursor-pointer" @click="readMore">
+    <div
+      v-if="post.imageTheme"
+      class="card-image rounded-4 cursor-pointer"
+      @click="readMore"
+    >
       <img :src="post.imageTheme" alt="..." />
+    </div>
+    <div v-if="post.urlVideoTheme" class="card-image rounded-4 cursor-pointer">
+      <iframe
+        class="w-100 h-100"
+        :src="post.urlVideoTheme"
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
     </div>
     <div class="card-body d-flex flex-column justify-content-between">
       <div class="card-body-content">
@@ -39,13 +51,14 @@
       </div>
       <div class="d-flex justify-content-between align-items-end">
         <!-- time to read -->
-        <div class="time">
+        <div class="time" v-if="post.timeToRead">
           <!-- icon opened book -->
           <span class="me-2">
             <i class="fas fa-book"></i>
           </span>
           <span>{{ post.timeToRead || 1 }} min read</span>
         </div>
+        <div v-else></div>
 
         <button class="btn btn-primary btn-sm rounded-1" @click="readMore">
           READ MORE
@@ -63,10 +76,12 @@ const { proxy } = getCurrentInstance();
 const props = defineProps({
   post: Object,
 });
-// read more function
-const readMore = (e) => {
-  e.preventDefault();
-  proxy.$emit("readMore", props.post._id);
+/**
+ * Navigates to the post detail page.
+ * @param {number} id - The ID of the post to navigate to.
+ */
+const readMore = () => {
+  proxy.$router.push({ name: "PostDetail", params: { id: props.post._id } });
 };
 const formatDate = (date) => {
   // en-US format
@@ -89,8 +104,8 @@ const formatDate = (date) => {
     img {
       width: 100%;
       height: 100%;
-      
-      &:hover{
+
+      &:hover {
         transform: scale(1.2);
         transition: transform 0.3s ease-in-out;
       }
@@ -99,8 +114,8 @@ const formatDate = (date) => {
   .card-body {
     width: calc(100% - 200px);
     height: 100%;
-    .card-title{
-      &:hover{
+    .card-title {
+      &:hover {
         text-decoration: underline;
         color: rgb(82, 77, 77);
       }

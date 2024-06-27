@@ -81,9 +81,27 @@
       <!-- Image theme -->
       <div class="image-theme px-3">
         <h3>Image</h3>
-        <input type="file" class="form-control" @change="chooseImageTheme" />
+        <BaseInput type="file" @change="chooseImageTheme" />
         <div class="w-100 mt-2 p-1 border rounded">
           <img :src="post.imageTheme" alt="image-theme" />
+        </div>
+      </div>
+      <!-- youtube video link -->
+      <div class="px-3">
+        <h3>Youtube Video</h3>
+        <BaseInput
+          type="text"
+          v-model="post.urlVideoTheme"
+          placeholder="Youtube video link"
+        />
+        <!-- preview -->
+        <div class="w-100 mt-2 p-1 border rounded">
+          <iframe
+            class="w-100"
+            :src="post.urlVideoTheme"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
         </div>
       </div>
     </div>
@@ -98,6 +116,7 @@ import { useCacheTagCombo } from "../../../utilities/cache/cacheTagCombo";
 import EditMode from "@/utilities/enum/EditMode";
 import { useLoadingStore } from "@/store/common/loadingStore";
 import PostStatus from "@/utilities/enum/PostStatus";
+import BaseInput from "@/components/input/BaseInput.vue";
 
 const { proxy } = getCurrentInstance();
 const mask = useLoadingStore();
@@ -201,6 +220,10 @@ const checkFileType = (file) => {
   const fileTypeAccepted = ["png", "jpeg", "jpg"];
   const fileType = file.name.split(".").pop();
   return fileTypeAccepted.includes(fileType);
+};
+
+const isYouTubeURL = (url) => {
+  return url.includes("youtube.com") || url.includes("youtu.be");
 };
 </script>
 

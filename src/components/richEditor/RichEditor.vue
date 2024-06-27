@@ -2,7 +2,7 @@
   <div>
     <froala v-if="!readOnly" :config="config" v-model:value="model">
     </froala>
-    <froalaView v-if="readOnly" v-model:value="model"/>
+    <froalaView v-if="readOnly" :config="config" v-model:value="model"/>
   </div>
 </template>
 

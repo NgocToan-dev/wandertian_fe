@@ -15,9 +15,9 @@ const blogRouter = [
         component: () => import("@/pages/blog/main/about/About.vue"),
       },
       {
-        name: "Contact",
-        path: "contact",
-        component: () => import("@/pages/blog/main/contact/Contact.vue"),
+        name: "StudyWithMe",
+        path: "studyWithMe",
+        component: () => import("@/pages/blog/main/studyWithMe/StudyWithMe.vue"),
       },
       {
         name: "PostDetail",
