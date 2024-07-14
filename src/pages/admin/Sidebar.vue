@@ -40,6 +40,11 @@ const items = [
     path: "/admin/category",
     icon: "fas fa-list",
   },
+  {
+    name: "Statistics",
+    path: "/admin/statistics",
+    icon: "fa-solid fa-chart-column",
+  },
 ];
 </script>
 

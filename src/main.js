@@ -27,6 +27,7 @@ import 'froala-editor/js/third_party/image_tui.min';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 import VueFroala from 'vue-froala-wysiwyg';
+import VueApexCharts from "vue3-apexcharts";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -35,6 +36,7 @@ const vfm = createVfm();
 
 // Add global variable
 app.config.globalProperties.$global = globalVariable;
+app.use(VueApexCharts);
 app.use(VueFroala);
 app.use(vfm);
 app.use(ToastPlugin);

@@ -2,22 +2,14 @@
   <div class="row py-4 px-5 h-100">
     <div class="h-100 flex-column d-flex col-md-9">
       <!-- Save button and edit icon -->
-      <div
-        class="post-section mb-2 d-flex flex-row justify-content-between align-items-center"
-      >
+      <div class="post-section mb-2 d-flex flex-row justify-content-between align-items-center">
         <div>
           <!-- Published button -->
-          <button
-            class="btn btn-primary me-2"
-            @click="save($global.PostStatus.PUBLISHED)"
-          >
+          <button class="btn btn-primary me-2" @click="save($global.PostStatus.PUBLISHED)">
             <i class="fas fa-check"></i> Publish
           </button>
           <!-- Save draft button -->
-          <button
-            @click="save($global.PostStatus.DRAFT)"
-            class="btn btn-outline-primary me-2"
-          >
+          <button @click="save($global.PostStatus.DRAFT)" class="btn btn-outline-primary me-2">
             Save Draft
           </button>
           <!-- Cancel button -->
@@ -30,22 +22,14 @@
       <!-- Title and description -->
       <div class="mb-3">
         <!-- Editable title -->
-        <div
-          class="fs-2"
-          contenteditable="true"
-          placeholder="Title"
-          @input="({ target }) => (post.title = target.textContent)"
-        >
+        <div class="fs-2" contenteditable="true" placeholder="Title"
+          @input="({ target }) => (post.title = target.textContent)">
           {{ post.title }}
         </div>
 
         <!-- Editable description -->
-        <div
-          class="mt-2"
-          contenteditable="true"
-          placeholder="Description"
-          @input="({ target }) => (post.description = target.textContent)"
-        >
+        <div class="mt-2" contenteditable="true" placeholder="Description"
+          @input="({ target }) => (post.description = target.textContent)">
           {{ post.description }}
         </div>
       </div>
@@ -58,25 +42,15 @@
       <!-- Input category for post -->
       <div class="px-3">
         <h3>Category</h3>
-        <Combobox
-          v-model="post.category"
-          :data="cacheCategoryCombo.data"
-          :columns="cacheCategoryCombo.columns"
-          :valueField="cacheCategoryCombo.key"
-          :displayField="cacheCategoryCombo.displayField"
-        />
+        <Combobox v-model="post.category" :data="cacheCategoryCombo.data" :columns="cacheCategoryCombo.columns"
+          :valueField="cacheCategoryCombo.key" :displayField="cacheCategoryCombo.displayField" />
       </div>
       <!-- List Tag -->
       <div class="px-3">
         <h3>Tag</h3>
         <!-- list tag chip -->
-        <Combobox
-          v-model="post.tag"
-          :data="cacheTagCombo.data"
-          :columns="cacheTagCombo.columns"
-          :valueField="cacheTagCombo.key"
-          :displayField="cacheTagCombo.displayField"
-        />
+        <Combobox v-model="post.tag" :data="cacheTagCombo.data" :columns="cacheTagCombo.columns"
+          :valueField="cacheTagCombo.key" :displayField="cacheTagCombo.displayField" />
       </div>
       <!-- Image theme -->
       <div class="image-theme px-3">
@@ -89,19 +63,10 @@
       <!-- youtube video link -->
       <div class="px-3">
         <h3>Youtube Video</h3>
-        <BaseInput
-          type="text"
-          v-model="post.urlVideoTheme"
-          placeholder="Youtube video link"
-        />
+        <BaseInput type="text" v-model="post.urlVideoTheme" placeholder="Youtube video link" />
         <!-- preview -->
         <div class="w-100 mt-2 p-1 border rounded">
-          <iframe
-            class="w-100"
-            :src="post.urlVideoTheme"
-            frameborder="0"
-            allowfullscreen
-          ></iframe>
+          <iframe class="w-100" :src="post.urlVideoTheme" frameborder="0" allowfullscreen></iframe>
         </div>
       </div>
     </div>
@@ -231,6 +196,7 @@ const isYouTubeURL = (url) => {
 .post-section {
   height: 40px;
 }
+
 .image-theme {
   img {
     width: 100%;

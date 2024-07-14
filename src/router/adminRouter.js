@@ -31,6 +31,11 @@ const adminRouter = [
         path: "tag",
         component: () => import("@/pages/admin/tag/TagList.vue"),
       },
+      {
+        name: "Statistics",
+        path: "statistics",
+        component: () => import("@/pages/admin/statistics/Statistics.vue"),
+      },
     ],
   },
 ];

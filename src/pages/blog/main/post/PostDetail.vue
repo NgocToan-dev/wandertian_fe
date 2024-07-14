@@ -6,6 +6,14 @@
         <div class="time">{{ formatDate(post.createdDate) }}</div>
         <h2>{{ post.title }}</h2>
         <p>{{ post.description }}</p>
+        <div v-if="post.urlVideoTheme" class="card-image rounded-4 cursor-pointer">
+          <iframe
+            class="w-100 h-100"
+            :src="post.urlVideoTheme"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
         <RichEditor v-model:content="post.contents" :readOnly="true" />
         <!-- list of categories -->
         <div class="category-section" v-if="post.category?.length > 0">

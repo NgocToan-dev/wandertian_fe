@@ -6,7 +6,6 @@ channel = "stable-23_11"
 [[ports]]
 localPort = 3000
 externalPort = 3001
-exposeLocalhost = true
 
 [[ports]]
 localPort = 24678
