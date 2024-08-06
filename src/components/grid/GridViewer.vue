@@ -5,7 +5,15 @@
         <tr>
           <!-- checkbox all -->
           <th v-if="multiple" class="col-checkbox">
-            <input type="checkbox" />
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="flexCheckDefault"
+                :checked="checkedAll"
+                @input="selectRowAll($event)"
+              />
+            </div>
           </th>
           <th
             v-for="(column, index) in columns"
@@ -19,7 +27,15 @@
       <tbody>
         <tr v-for="(row, index) in rows" :key="row._id">
           <td v-if="multiple" class="col-checkbox">
-            <input type="checkbox" />
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="flexCheckDefault"
+                @input="selectRow(row)"
+                :checked="row.selected"
+              />
+            </div>
           </td>
           <td
             v-for="(column, index) in columns"
@@ -42,8 +58,24 @@
               v-else-if="column.enum"
               class="d-flex align-items-center justify-content-center"
             >
-              <span class="bg-primary py-1 px-3 rounded-5 text-white">
-                {{ setFormatType(row[column.dataField], column.dataType, column.enum) }}
+              <span
+                class="py-1 px-3 rounded-5"
+                :style="{
+                  backgroundColor: setFormatType(
+                    row[column.dataField],
+                    column.dataType,
+                    column.enum
+                  ).bg,
+                  color: setFormatType(
+                    row[column.dataField],
+                    column.dataType,
+                    column.enum
+                  ).color,
+                }"
+              >
+                {{
+                  setFormatType(row[column.dataField], column.dataType, column.enum).value
+                }}
               </span>
             </div>
             <div v-else>
@@ -59,6 +91,7 @@
 <script setup>
 import commonFn from "@/utilities/commonFn";
 import ColumnType from "@/utilities/enum/ColumnType";
+import { computed } from "vue";
 
 const props = defineProps({
   rows: Array,
@@ -69,6 +102,9 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["editRow", "deleteRow"]);
+const checkedAll = computed(() => {
+  return props.rows.every((row) => row.selected);
+});
 
 const setAlignColumn = (column) => {
   let align = column.align;
@@ -109,6 +145,14 @@ const setFormatType = (value, dataType, enumValue) => {
       return value;
   }
 };
+const selectRow = (row) => {
+  row.selected = !row.selected;
+};
+const selectRowAll = (event) => {
+  props.rows.forEach((row) => {
+    row.selected = event.target.checked;
+  });
+};
 
 const editRow = (row) => {
   emit("editRow", row);
@@ -121,7 +165,7 @@ const deleteRow = (row) => {
 
 <style lang="scss" scoped>
 .col-checkbox {
-  width: 50px;
+  width: 20px;
 }
 th {
   white-space: nowrap;

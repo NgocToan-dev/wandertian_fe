@@ -3,8 +3,12 @@
   <div class="sidebar bg-dark py-2">
     <h4 @click="backToHome" class="cursor-pointer text-center mb-4">Wandertian</h4>
     <div class="d-flex flex-column">
-      <router-link :to="{ path: item.path }" class="text-white item py-2 ps-3 d-flex align-items-center"
-        v-for="(item, index) in items" :class="{ active: item.path === activePath }">
+      <router-link
+        :to="{ path: item.path }"
+        class="text-white item py-2 ps-3 d-flex align-items-center"
+        v-for="(item, index) in items"
+        :class="{ active: item.path.includes(activePath) }"
+      >
         <!-- icon -->
         <i :class="[item.icon, 'me-2']"></i>
         {{ item.name }}
@@ -70,13 +74,13 @@ const items = [
       background-color: #555353;
 
       &::before {
-        content: ' ';
+        content: " ";
         position: absolute;
         width: 4px;
         height: 100%;
         left: 0;
         top: 0;
-        background-color: #0D6EFD;
+        background-color: #0d6efd;
       }
     }
   }

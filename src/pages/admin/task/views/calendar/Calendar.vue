@@ -17,6 +17,7 @@ import VueCal from "vue-cal";
 import "vue-cal/dist/vuecal.css";
 import modalRegister from "@/utilities/modalRegister";
 
+const nowTime = new Date().getHours();
 const dailyRoutine = ref([
   {
     start: "2024-8-6 14:00",

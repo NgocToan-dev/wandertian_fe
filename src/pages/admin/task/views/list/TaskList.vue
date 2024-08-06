@@ -1,45 +1,61 @@
 <template>
-  <GridViewer
-    multiple
-    :rows="rows"
-    :columns="columns"
-    @editRow="editRow"
-    @deleteRow="deleteRow"
-  />
+  <div>
+    <!-- button add task -->
+    <button class="btn btn-primary" @click="addTask">Add Task</button>
+    <GridViewer
+      class="mt-2"
+      multiple
+      :rows="items"
+      :columns="columns"
+      @editRow="editRow"
+      @deleteRow="deleteRow"
+    />
+  </div>
 </template>
 
-<script setup>
+<script>
 import { ref } from "vue";
 import GridViewer from "@/components/grid/GridViewer.vue";
 import ColumnType from "@/utilities/enum/ColumnType";
 import Enum from "@/utilities/enum/Enum";
+import baseList from "@/pages/base/baseList";
+import { useTaskStore } from "@/store/business/taskStore";
+import modalRegister from "@/utilities/modalRegister";
 
-// Task columns
-const columns = ref([
-  { dataField: "id", label: "ID", dataType: "number" },
-  { dataField: "name", label: "Name" },
-  { dataField: "description", label: "Description" },
-  {
-    dataField: "status",
-    label: "Status",
-    dataType: ColumnType.Enum,
-    enum: "TaskStatus",
-    width: 200,
+export default {
+  components: {
+    GridViewer,
   },
-  { dataField: "rowAction", width: 120 },
-]);
+  extends: baseList,
+  setup(props) {
+    const store = useTaskStore();
+    // Task columns
+    const columns = ref([
+      { dataField: "name", label: "Name" },
+      { dataField: "description", label: "Description" },
+      {
+        dataField: "status",
+        label: "Status",
+        dataType: ColumnType.Enum,
+        enum: "TaskStatus",
+        width: 200,
+      },
+      { dataField: "rowAction", width: 120 },
+    ]);
 
-// fake data
-const rows = ref([
-  { id: 1, name: "Task 1", description: "Description 1", status: Enum.TaskStatus.Todo },
-  {
-    id: 2,
-    name: "Task 2",
-    description: "Description 2",
-    status: Enum.TaskStatus.InProgress,
+    const addTask = () => {
+      modalRegister.openModal("EventDetail", {
+        data: null,
+        store: store,
+      });
+    };
+    return {
+      store,
+      columns,
+      addTask,
+    };
   },
-  { id: 3, name: "Task 3", description: "Description 3", status: Enum.TaskStatus.Done },
-]);
+};
 </script>
 
 <style lang="scss" scoped></style>

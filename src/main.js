@@ -28,6 +28,7 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 import VueFroala from 'vue-froala-wysiwyg';
 import VueApexCharts from "vue3-apexcharts";
+import ganttastic from '@infectoone/vue-ganttastic'
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -36,6 +37,7 @@ const vfm = createVfm();
 
 // Add global variable
 app.config.globalProperties.$global = globalVariable;
+app.use(ganttastic);
 app.use(VueApexCharts);
 app.use(VueFroala);
 app.use(vfm);
