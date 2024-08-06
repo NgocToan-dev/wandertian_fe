@@ -45,6 +45,11 @@ const items = [
     path: "/admin/statistics",
     icon: "fa-solid fa-chart-column",
   },
+  {
+    name: "Calendar",
+    path: "/admin/calendar",
+    icon: "fa-solid fa-calendar",
+  },
 ];
 </script>
 

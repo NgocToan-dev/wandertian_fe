@@ -36,6 +36,11 @@ const adminRouter = [
         path: "statistics",
         component: () => import("@/pages/admin/statistics/Statistics.vue"),
       },
+      {
+        name: "Calendar",
+        path: "calendar",
+        component: () => import("@/pages/admin/task/Calendar.vue"),
+      },
     ],
   },
 ];
