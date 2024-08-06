@@ -37,9 +37,30 @@ const adminRouter = [
         component: () => import("@/pages/admin/statistics/Statistics.vue"),
       },
       {
-        name: "Calendar",
-        path: "calendar",
-        component: () => import("@/pages/admin/task/Calendar.vue"),
+        name: "TaskIndex",
+        path: "task",
+        redirect: "/admin/task/list",
+        component: () => import("@/pages/admin/task/TaskIndex.vue"),
+        children: [
+          {
+            name: "TaskCalendarView",
+            path: "calendar",
+            component: () =>
+              import("@/pages/admin/task/views/calendar/Calendar.vue"),
+          },
+          {
+            name: "TaskListView",
+            path: "list",
+            component: () =>
+              import("@/pages/admin/task/views/list/TaskList.vue"),
+          },
+          {
+            name: "TaskGanttChartView",
+            path: "ganttChart",
+            component: () =>
+              import("@/pages/admin/task/views/ganttChart/GanttChart.vue"),
+          },
+        ],
       },
     ],
   },

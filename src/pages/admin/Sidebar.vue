@@ -46,8 +46,8 @@ const items = [
     icon: "fa-solid fa-chart-column",
   },
   {
-    name: "Calendar",
-    path: "/admin/calendar",
+    name: "Task",
+    path: "/admin/task",
     icon: "fa-solid fa-calendar",
   },
 ];

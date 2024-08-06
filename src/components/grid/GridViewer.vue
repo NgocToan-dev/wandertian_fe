@@ -3,6 +3,10 @@
     <table class="table table-bordered">
       <thead>
         <tr>
+          <!-- checkbox all -->
+          <th v-if="multiple" class="col-checkbox">
+            <input type="checkbox" />
+          </th>
           <th
             v-for="(column, index) in columns"
             :key="index"
@@ -14,6 +18,9 @@
       </thead>
       <tbody>
         <tr v-for="(row, index) in rows" :key="row._id">
+          <td v-if="multiple" class="col-checkbox">
+            <input type="checkbox" />
+          </td>
           <td
             v-for="(column, index) in columns"
             :key="index"
@@ -31,6 +38,14 @@
                 <i class="fas fa-trash"></i>
               </button>
             </div>
+            <div
+              v-else-if="column.enum"
+              class="d-flex align-items-center justify-content-center"
+            >
+              <span class="bg-primary py-1 px-3 rounded-5 text-white">
+                {{ setFormatType(row[column.dataField], column.dataType, column.enum) }}
+              </span>
+            </div>
             <div v-else>
               {{ setFormatType(row[column.dataField], column.dataType) }}
             </div>
@@ -42,12 +57,16 @@
 </template>
 
 <script setup>
-import { getCurrentInstance } from "vue";
+import commonFn from "@/utilities/commonFn";
+import ColumnType from "@/utilities/enum/ColumnType";
 
-const { proxy } = getCurrentInstance();
 const props = defineProps({
   rows: Array,
   columns: Array,
+  multiple: {
+    type: Boolean,
+    default: false,
+  },
 });
 const emit = defineEmits(["editRow", "deleteRow"]);
 
@@ -59,10 +78,11 @@ const setAlignColumn = (column) => {
   // the other is align left
   if (!align) {
     switch (column.dataType) {
-      case "number":
+      case ColumnType.Number:
         align = "end";
         break;
-      case "date":
+      case ColumnType.Date:
+      case ColumnType.Enum:
         align = "center";
         break;
     }
@@ -77,12 +97,14 @@ const setAlignColumn = (column) => {
   }
   return align ? `text-${align}` : "";
 };
-const setFormatType = (value, dataType) => {
+const setFormatType = (value, dataType, enumValue) => {
   switch (dataType) {
-    case "date":
+    case ColumnType.Date:
       if (!(typeof value == "string")) return "";
       // vietnamese date format
       return new Date(value).toLocaleDateString("vi-VN");
+    case ColumnType.Enum:
+      return commonFn.getEnumValue(enumValue, value);
     default:
       return value;
   }
@@ -98,6 +120,9 @@ const deleteRow = (row) => {
 </script>
 
 <style lang="scss" scoped>
+.col-checkbox {
+  width: 50px;
+}
 th {
   white-space: nowrap;
 }

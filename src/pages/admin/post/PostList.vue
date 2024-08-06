@@ -25,6 +25,7 @@ import GridViewer from "@/components/grid/GridViewer.vue";
 import baseList from "@/pages/base/baseList";
 import { useBlogStore } from "@/store/business/blogStore";
 import commonFn from "@/utilities/commonFn";
+import ColumnType from "@/utilities/enum/ColumnType";
 import EditMode from "@/utilities/enum/EditMode";
 import { getCurrentInstance } from "vue";
 
@@ -54,14 +55,14 @@ export default {
         dataField: "createdDate",
         label: "Created Date",
         sort: true,
-        dataType: "date",
+        dataType: ColumnType.Date,
         width: 120,
       },
       {
         dataField: "updatedDate",
         label: "Updated Date",
         sort: true,
-        dataType: "date",
+        dataType: ColumnType.Date,
         width: 120,
       },
       {
