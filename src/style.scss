@@ -4,11 +4,13 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-size: 14px;
+  font-family: "Inter-regular", "Helvetica";
 }
+
 #app {
   min-height: 100vh;
 }
+
 main {
   min-height: 100vh;
 }
@@ -24,12 +26,15 @@ a {
 ::-webkit-input-placeholder {
   font-style: italic;
 }
+
 :-moz-placeholder {
   font-style: italic;
 }
+
 ::-moz-placeholder {
   font-style: italic;
 }
+
 :-ms-input-placeholder {
   font-style: italic;
 }
@@ -60,15 +65,3 @@ a {
 .vld-overlay.is-full-page {
   z-index: 1103 !important;
 }
-
-body {
-  font-family: "Helvetica", sans-serif !important;
-  line-height: 1.6;
-}
-h1,h2,h3,h4,h5,h6 {
-  font-family: "Helvetica-bold", sans-serif !important;
-}
-p {
-  font-family: "Helvetica", sans-serif !important;
-}
-

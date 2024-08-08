@@ -1,40 +1,29 @@
 <template>
-  <div>
-    <label v-if="label"
-      >{{ label }} <span v-if="isRequired" class="text-danger">*</span></label
-    >
-    <input
-      ref="input"
-      class="form-control"
-      v-model="modelValue"
-      :placeholder="placeholder"
-      :type="type"
-      @blur="validateInput"
-      @change="change"
-    />
+  <div :style="`width: ${width}px`">
+    <label v-if="label">{{ label }} <span v-if="isRequired" class="text-danger">*</span></label>
+    <input ref="input" class="form-control" v-model="modelValue" :placeholder="placeholder" :type="type"
+      @blur="validateInput" @change="change" />
     <!-- error warning -->
     <div v-if="error" class="text-danger error-text">{{ error }}</div>
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { PropType, Ref, ref } from "vue";
 
 const props = defineProps({
-  label: String,
-  placeholder: String,
-  type: String,
-  rules: Array,
+  label: { type: String },
+  placeholder: { type: String },
+  type: { type: String },
+  rules: { type: Array as PropType<Array<string>> | undefined },
+  width: { type: Number }
 });
 const emit = defineEmits(["change"]);
 // Define the modelValue property
-const modelValue = defineModel({
-  prop: "modelValue",
-  event: "update:modelValue",
-});
+const modelValue = defineModel('modelValue');
 const isRequired = props.rules && props.rules.includes("required");
 // Define the error property
-const error = ref(null);
+const error: Ref<string> = ref('');
 const change = (e) => {
   // Emit the input event
   emit("change", e);
@@ -43,8 +32,8 @@ const validateInput = () => {
   // Validate the input value
   error.value = validate(modelValue.value, props.rules);
 };
-const validate = (value, rules) => {
-  if (rules === undefined) return null;
+const validate = (value: any, rules: Array<string> | undefined) => {
+  if (rules === undefined) return '';
   for (let i = 0; i < rules.length; i++) {
     const rule = rules[i];
     if (rule === "required" && !value) {
@@ -54,9 +43,9 @@ const validate = (value, rules) => {
       return `${props.label} is not a valid email`;
     }
   }
-  return null;
+  return '';
 };
-const validateEmail = (email) => {
+const validateEmail = (email: string) => {
   const re = /\S+@\S+\.\S+/;
   return re.test(email);
 };

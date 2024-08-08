@@ -8,35 +8,31 @@
         <i class="fas fa-plus"></i>
       </button>
     </div>
-    <GridViewer
-      :rows="data"
-      :columns="columns"
-      @editRow="editRow"
-      @deleteRow="deleteRow"
-    />
+    <GridViewer :rows="data" :columns="columns" @editRow="editRow" @deleteRow="deleteRow" />
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref, Ref } from "vue";
 import GridViewer from "@/components/grid/GridViewer.vue";
 import { useCacheTagCombo } from "@/utilities/cache/cacheTagCombo";
 import baseDictionaryList from "@/pages/base/baseDictionaryList";
-import { ref } from "vue";
 import { useTagStore } from "@/store/dictionary/tagStore";
+import IColumnConfig from "@/interfaces/gridView/IColumnConfig";
 
-export default {
-  name: "CategoryList",
+export default defineComponent({
+  name: "TagList",
   extends: baseDictionaryList,
   components: {
-    GridViewer,
+    GridViewer
   },
   setup() {
     const store = useTagStore();
     const { cacheTagCombo } = useCacheTagCombo();
-    const data = ref(cacheTagCombo.data);
+    const data: Ref<Array<any>> = ref(cacheTagCombo.data);
     const formDetail = "TagDetail";
-    const columns = [
-      ...cacheTagCombo.columns,
+    const columns: Array<IColumnConfig> = [
+      { dataField: "name", title: "Name" },
       {
         dataField: "rowAction",
         width: 120,
@@ -50,7 +46,7 @@ export default {
       formDetail,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped></style>

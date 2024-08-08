@@ -64,7 +64,7 @@
 <script setup>
 import CardList from "@/components/card/CardList.vue";
 import { useBlogStore } from "@/store/business/blogStore";
-import { computed, getCurrentInstance, onMounted, ref } from "vue";
+import { getCurrentInstance, ref } from "vue";
 
 const { proxy } = getCurrentInstance();
 const blogStore = useBlogStore();

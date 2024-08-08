@@ -18,7 +18,7 @@
     </div>
   </VueFinalModal>
 </template>
-<script setup>
+<script setup lang="ts">
 import { VueFinalModal } from "vue-final-modal";
 const props = defineProps({
   title: String,

@@ -9,23 +9,18 @@
       </button>
     </div>
 
-    <GridViewer
-      :rows="data"
-      :columns="columns"
-      @editRow="editRow"
-      @deleteRow="deleteRow"
-    />
+    <GridViewer :rows="data" :columns="columns" @editRow="editRow" @deleteRow="deleteRow" />
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import GridViewer from "@/components/grid/GridViewer.vue";
 import { useCacheCategoryCombo } from "@/utilities/cache/cacheCategoryCombo";
 import baseDictionaryList from "../../base/baseDictionaryList";
 import { useCategoryStore } from "../../../store/dictionary/categoryStore";
-import { ref } from "vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "CategoryList",
   extends: baseDictionaryList,
   components: {
@@ -34,7 +29,7 @@ export default {
   setup() {
     const store = useCategoryStore();
     const { cacheCategoryCombo } = useCacheCategoryCombo();
-    const data = ref(cacheCategoryCombo.data);
+    const data: Array<any> = cacheCategoryCombo.data;
     const formDetail = "CategoryDetail";
     const columns = [
       ...cacheCategoryCombo.columns,
@@ -51,7 +46,7 @@ export default {
       formDetail,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped></style>

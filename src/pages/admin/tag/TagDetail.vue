@@ -1,18 +1,8 @@
 <template>
-  <DynamicModal
-    title="Tag"
-    @before-open="beforeOpen"
-    @before-close="beforeClose"
-    width="500"
-  >
+  <DynamicModal :title="title" @before-open="beforeOpen" @before-close="beforeClose" width="500">
     <template #modal__content>
       <div class="form-group">
-        <BaseInput
-          label="Name"
-          v-model="model.name"
-          type="text"
-          placeholder="Enter description"
-        />
+        <BaseInput label="Name" v-model="model.name" type="text" placeholder="Enter description" />
       </div>
     </template>
     <template #modal__footer="{ close }">
@@ -22,18 +12,20 @@
   </DynamicModal>
 </template>
 
-<script>
-import { defineComponent, getCurrentInstance } from "vue";
+<script lang="ts">
+import { defineComponent } from "vue";
 import { useTagStore } from "@/store/dictionary/tagStore";
 import baseModal from "@/pages/base/baseModal";
 
 export default defineComponent({
   name: "TagDetail",
   extends: baseModal,
-  setup(props) {
+  setup() {
     const store = useTagStore();
+    const module = "tag"
     return {
       store,
+      module
     };
   },
 });

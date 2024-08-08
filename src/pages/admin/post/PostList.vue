@@ -11,57 +11,54 @@
         <div class="btn btn-primary" @click="addPost">Add Post</div>
       </div>
     </div>
-    <GridViewer
-      :rows="items"
-      :columns="columns"
-      @editRow="editRow"
-      @deleteRow="deleteRow"
-    />
+    <GridViewer :rows="items" :columns="columns" @editRow="editRow" @deleteRow="deleteRow" />
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import GridViewer from "@/components/grid/GridViewer.vue";
+import IColumnConfig from "@/interfaces/gridView/IColumnConfig";
 import baseList from "@/pages/base/baseList";
 import { useBlogStore } from "@/store/business/blogStore";
 import commonFn from "@/utilities/commonFn";
 import ColumnType from "@/utilities/enum/ColumnType";
 import EditMode from "@/utilities/enum/EditMode";
-import { getCurrentInstance } from "vue";
+import { defineComponent, getCurrentInstance } from "vue";
 
-export default {
+export default defineComponent({
   name: "CategoryList",
   extends: baseList,
   components: {
     GridViewer,
   },
   setup() {
-    const { proxy } = getCurrentInstance();
+    const { proxy } = getCurrentInstance() as any;
     const store = useBlogStore();
     const formDetail = "PostEditor";
-    const columns = [
+    const formInline = true;
+    const columns: Array<IColumnConfig> = [
       {
         dataField: "title",
-        label: "Title",
-        sort: true,
+        title: "Title",
+        sortable: true,
         width: 200,
       },
       {
         dataField: "description",
-        label: "Description",
-        sort: true,
+        title: "Description",
+        sortable: true,
       },
       {
         dataField: "createdDate",
-        label: "Created Date",
-        sort: true,
+        title: "Created Date",
+        sortable: true,
         dataType: ColumnType.Date,
         width: 120,
       },
       {
         dataField: "updatedDate",
-        label: "Updated Date",
-        sort: true,
+        title: "Updated Date",
+        sortable: true,
         dataType: ColumnType.Date,
         width: 120,
       },
@@ -81,10 +78,11 @@ export default {
       store,
       columns,
       formDetail,
+      formInline,
       addPost,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped></style>

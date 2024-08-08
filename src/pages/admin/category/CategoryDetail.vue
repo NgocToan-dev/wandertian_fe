@@ -1,6 +1,6 @@
 <template>
   <DynamicModal
-    title="Category"
+    :title="title"
     @before-open="beforeOpen"
     @before-close="beforeClose"
     width="500"
@@ -24,8 +24,8 @@
   </DynamicModal>
 </template>
 
-<script>
-import { defineComponent, getCurrentInstance, onMounted } from "vue";
+<script lang="ts">
+import { defineComponent } from "vue";
 import { useCategoryStore } from "@/store/dictionary/categoryStore";
 import baseModal from "../../base/baseModal";
 
@@ -34,8 +34,10 @@ export default defineComponent({
   extends: baseModal,
   setup(props) {
     const store = useCategoryStore();
+    const module = 'category';
     return {
       store,
+      module
     };
   },
 });

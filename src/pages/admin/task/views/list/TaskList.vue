@@ -2,25 +2,18 @@
   <div>
     <!-- button add task -->
     <button class="btn btn-primary" @click="addTask">Add Task</button>
-    <GridViewer
-      class="mt-2"
-      multiple
-      :rows="items"
-      :columns="columns"
-      @editRow="editRow"
-      @deleteRow="deleteRow"
-    />
+    <GridViewer class="mt-2" multiple :rows="items" :columns="columns" @editRow="editRow" @deleteRow="deleteRow" />
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script lang="ts">
 import GridViewer from "@/components/grid/GridViewer.vue";
 import ColumnType from "@/utilities/enum/ColumnType";
-import Enum from "@/utilities/enum/Enum";
 import baseList from "@/pages/base/baseList";
 import { useTaskStore } from "@/store/business/taskStore";
 import modalRegister from "@/utilities/modalRegister";
+import IColumnConfig from "@/interfaces/gridView/IColumnConfig";
+import EditMode from "@/utilities/enum/EditMode";
 
 export default {
   components: {
@@ -28,29 +21,31 @@ export default {
   },
   extends: baseList,
   setup(props) {
+    const formDetail = 'EventDetail';
     const store = useTaskStore();
     // Task columns
-    const columns = ref([
-      { dataField: "name", label: "Name" },
-      { dataField: "description", label: "Description" },
+    const columns: Array<IColumnConfig> = [
+      { dataField: "name", title: "Name" },
+      { dataField: "description", title: "Description" },
       {
         dataField: "status",
-        label: "Status",
+        title: "Status",
         dataType: ColumnType.Enum,
         enum: "TaskStatus",
         width: 200,
       },
       { dataField: "rowAction", width: 120 },
-    ]);
+    ];
 
     const addTask = () => {
       modalRegister.openModal("EventDetail", {
         data: null,
-        store: store,
+        mode: EditMode.CREATE
       });
     };
     return {
       store,
+      formDetail,
       columns,
       addTask,
     };

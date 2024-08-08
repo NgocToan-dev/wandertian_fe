@@ -3,7 +3,7 @@
     <h2 class="statistics-header">Statistics</h2>
     <div class="row">
       <div class="col">
-        <apexchart width="500" type="bar" :options="options" :series="series"/>
+        <apexchart width="500" type="bar" :options="options" :series="series" />
       </div>
       <div class="col">col-2</div>
     </div>
@@ -11,9 +11,9 @@
 </template>
 
 <script setup>
-import {apexChartBuilder} from '@/components/chart/apexChart.js';
+import { apexChartBuilder } from '@/components/chart/apexChart.ts';
 
-const {buildOptions, buildSeries} = apexChartBuilder();
+const { buildOptions, buildSeries } = apexChartBuilder();
 
 const chart_id = 'chart-1';
 const xaxis = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
