@@ -1,5 +1,5 @@
 export default interface IBaseEntity {
   _id: string;
-  createdDate: Date;
+  createdDate?: Date;
   mode: string;
 }

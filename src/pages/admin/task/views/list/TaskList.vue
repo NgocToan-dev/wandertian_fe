@@ -2,7 +2,14 @@
   <div>
     <!-- button add task -->
     <button class="btn btn-primary" @click="addTask">Add Task</button>
-    <GridViewer class="mt-2" multiple :rows="items" :columns="columns" @editRow="editRow" @deleteRow="deleteRow" />
+    <GridViewer
+      class="mt-2"
+      multiple
+      :rows="items"
+      :columns="columns"
+      @editRow="editRow"
+      @deleteRow="deleteRow"
+    />
   </div>
 </template>
 
@@ -21,12 +28,14 @@ export default {
   },
   extends: baseList,
   setup(props) {
-    const formDetail = 'EventDetail';
+    const formDetail = "EventDetail";
     const store = useTaskStore();
     // Task columns
     const columns: Array<IColumnConfig> = [
-      { dataField: "name", title: "Name" },
-      { dataField: "description", title: "Description" },
+      { dataField: "title", title: "Title" },
+      { dataField: "note", title: "Note" },
+      { dataField: "startDate", title: "Start Date", dataType: ColumnType.DateTime },
+      { dataField: "endDate", title: "End Date", dataType: ColumnType.DateTime },
       {
         dataField: "status",
         title: "Status",
@@ -40,7 +49,7 @@ export default {
     const addTask = () => {
       modalRegister.openModal("EventDetail", {
         data: null,
-        mode: EditMode.CREATE
+        mode: EditMode.CREATE,
       });
     };
     return {

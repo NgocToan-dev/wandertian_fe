@@ -8,10 +8,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Sidebar from "./Sidebar.vue";
 import Topbar from "./Topbar.vue";
-
 </script>
 
 <style lang="scss" scoped>

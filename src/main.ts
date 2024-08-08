@@ -16,24 +16,24 @@ import "vue-final-modal/style.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "vue-toast-notification/dist/theme-bootstrap.css";
 import { globalVariable } from "./globalVariable";
-//Import Froala Editor 
-import 'froala-editor/js/plugins.pkgd.min.js';
+//Import Froala Editor
+import "froala-editor/js/plugins.pkgd.min.js";
 //Import third party plugins
-import 'froala-editor/js/third_party/embedly.min';
-import 'froala-editor/js/third_party/font_awesome.min';
-import 'froala-editor/js/third_party/spell_checker.min';
-import 'froala-editor/js/third_party/image_tui.min';
+import "froala-editor/js/third_party/embedly.min";
+import "froala-editor/js/third_party/font_awesome.min";
+import "froala-editor/js/third_party/spell_checker.min";
+import "froala-editor/js/third_party/image_tui.min";
 // Import Froala Editor css files.
-import 'froala-editor/css/froala_editor.pkgd.min.css';
-import 'froala-editor/css/froala_style.min.css';
-import VueFroala from 'vue-froala-wysiwyg';
+import "froala-editor/css/froala_editor.pkgd.min.css";
+import "froala-editor/css/froala_style.min.css";
+import VueFroala from "vue-froala-wysiwyg";
 import VueApexCharts from "vue3-apexcharts";
-import ganttastic from '@infectoone/vue-ganttastic'
+import ganttastic from "@infectoone/vue-ganttastic";
+import "vue-cal/dist/vuecal.css";
 
 const app = createApp(App);
 const pinia = createPinia();
 const vfm = createVfm();
-
 
 // Add global variable
 app.config.globalProperties.$global = globalVariable;
