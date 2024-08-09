@@ -36,7 +36,7 @@
                   name="options-outlined"
                   autocomplete="off"
                   id="btn1"
-                  checked
+                  v-model="model.type"
                 />
                 <label
                   class="btn btn-outline-primary d-flex gap-2 align-items-center"
@@ -53,6 +53,7 @@
                   name="options-outlined"
                   autocomplete="off"
                   id="btn2"
+                  v-model="model.type"
                 />
                 <label
                   class="btn btn-outline-primary d-flex gap-2 align-items-center"
@@ -69,6 +70,7 @@
                   name="options-outlined"
                   autocomplete="off"
                   id="btn3"
+                  v-model="model.type"
                 />
                 <label
                   class="btn btn-outline-primary d-flex gap-2 align-items-center"
@@ -89,8 +91,7 @@
               <div class="text-left">Start Date</div>
             </div>
             <div class="col-9 d-flex gap-2">
-              <base-input type="date" />
-              <base-input type="time" />
+              <base-input type="datetime-local" v-model="model.startDate" />
             </div>
           </div>
           <!-- Time -->
@@ -103,8 +104,7 @@
             </div>
             <div class="col-9 d-flex gap-3 align-items-center">
               <div class="col-9 d-flex gap-2">
-                <base-input type="date" />
-                <base-input type="time" />
+                <base-input type="datetime-local" v-model="model.endDate" />
               </div>
             </div>
           </div>
@@ -122,6 +122,7 @@
                 placeholder="Leave a note here"
                 id="floatingTextarea2"
                 style="height: 50px"
+                v-model="model.note"
               ></textarea>
             </div>
           </div>
@@ -137,7 +138,7 @@
               <div class="text-left">Link</div>
             </div>
             <div class="col-9">
-              <base-input type="text" />
+              <base-input type="text" v-model="model.link" />
             </div>
           </div>
           <!-- Location -->
@@ -149,7 +150,7 @@
               <div class="text-left">Location</div>
             </div>
             <div class="col-9">
-              <base-input type="text" />
+              <base-input type="text" v-model="model.location" />
             </div>
           </div>
           <!-- Colors -->
@@ -161,7 +162,7 @@
               <div class="text-left">Color</div>
             </div>
             <div class="col-9">
-              <base-input type="color" width="100" />
+              <base-input type="color" :width="100" v-model="model.color" />
             </div>
           </div>
         </div>
@@ -190,15 +191,17 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import baseModal from "@/pages/base/baseModal";
+import { useTaskStore } from "@/store/business/taskStore";
 
 export default defineComponent({
   name: "CategoryDetail",
   extends: baseModal,
   setup() {
     const module: string = "event";
-
+    const store = useTaskStore();
     return {
       module,
+      store,
     };
   },
 });

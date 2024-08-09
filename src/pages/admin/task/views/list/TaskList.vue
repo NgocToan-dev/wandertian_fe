@@ -21,6 +21,7 @@ import { useTaskStore } from "@/store/business/taskStore";
 import modalRegister from "@/utilities/modalRegister";
 import IColumnConfig from "@/interfaces/gridView/IColumnConfig";
 import EditMode from "@/utilities/enum/EditMode";
+import IEventEntity from "@/interfaces/entity/IEventEntity";
 
 export default {
   components: {
@@ -48,7 +49,7 @@ export default {
 
     const addTask = () => {
       modalRegister.openModal("EventDetail", {
-        data: null,
+        data: {} as IEventEntity,
         mode: EditMode.CREATE,
       });
     };

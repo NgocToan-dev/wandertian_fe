@@ -1,5 +1,6 @@
 import httpConfig from "./httpConfig";
 import httpClient from "./httpClient";
+import IBaseEntity from "@/interfaces/entity/IBaseEntity";
 
 class BaseApi {
   apiName = "";
@@ -16,7 +17,7 @@ class BaseApi {
     const response = await httpClient.get(request);
     return response.data;
   }
-  async getById(id) {
+  async getById(id: string) {
     const request = {
       url: [this.getApiUrl(), id].join("/"),
     };
@@ -24,7 +25,7 @@ class BaseApi {
     const response = await httpClient.get(request);
     return response.data;
   }
-  async create(data) {
+  async create(data: IBaseEntity) {
     const request = {
       url: [this.getApiUrl(), "add"].join("/"),
       data,
@@ -34,10 +35,9 @@ class BaseApi {
     return response.data;
   }
 
-  async update(data) {
+  async update(data: IBaseEntity) {
     const id = data._id;
     const saveData = { ...data };
-    delete saveData._id;
     const request = {
       url: [this.getApiUrl(), id].join("/"),
       data: saveData,

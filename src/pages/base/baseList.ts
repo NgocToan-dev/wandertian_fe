@@ -2,7 +2,7 @@ import { useLoadingStore } from "@/store/common/loadingStore";
 import EditMode from "@/utilities/enum/EditMode";
 import modalRegister from "@/utilities/modalRegister";
 import { showInfo } from "@/utilities/modalRegister/messageBox";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   data() {
@@ -55,6 +55,7 @@ export default defineComponent({
         modalRegister.openModal(me.formDetail, {
           model: record,
           mode: EditMode.EDIT,
+          refresh: me.refresh,
         });
       }
     },
@@ -70,7 +71,7 @@ export default defineComponent({
           await me.store.delete(record._id);
           me.$toast.success("Record deleted successfully.");
           await this.refresh();
-        },
+        }
       );
     },
   },

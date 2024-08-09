@@ -1,4 +1,5 @@
 import EditMode from "@/utilities/enum/EditMode";
+import { log } from "console";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -11,8 +12,10 @@ export default defineComponent({
   },
   mounted() {
     const me: any = this;
-    me.model = { ...me.$attrs.params.data };
+    debugger
+    me.model = { ...me.$attrs.params.model };
     me.mode = me.$attrs.params.mode;
+    me.refresh = me.$attrs.params.refresh;
     me.getTitleForm(me.mode);
   },
   methods: {
@@ -32,7 +35,7 @@ export default defineComponent({
         default:
           return "";
       }
-      me.title = [me.title,me.module].join(' ');
+      me.title = [me.title, me.module].join(" ");
     },
     async commandClick(command: string) {
       const me: any = this;
@@ -51,10 +54,11 @@ export default defineComponent({
         await me.store.save({ ...this.model, mode: this.mode });
         this.$emit("confirm");
         this.$toast.success("Save success");
-        await me.$attrs.params.callbackLoad();
       } catch (e) {
+        console.log(e);
         me.$toast.error("Save failed");
       }
+      await me.refresh();
     },
   },
 });
