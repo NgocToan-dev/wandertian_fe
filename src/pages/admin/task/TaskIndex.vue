@@ -10,7 +10,7 @@
         </router-link>
       </li>
     </ul>
-    <RouterView class="mt-3"/>
+    <RouterView class="mt-3" />
   </div>
 </template>
 
@@ -29,6 +29,14 @@ const tabs = [
   {
     name: "TaskGanttChartView",
     label: "Gannt Chart",
+  },
+  {
+    name: "TaskKanbanView",
+    label: "Kanban",
+  },
+  {
+    name: "TaskTreeView",
+    label: "Tree",
   },
 ];
 const tabActive = computed(() => {

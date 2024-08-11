@@ -23,7 +23,7 @@
       <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
         <div class="grid">
           <div class="col item-header" v-for="column in columns" :key="column.valueField">
-            <strong>{{ column.label }}</strong>
+            <strong>{{ column.title }}</strong>
           </div>
         </div>
         <div
@@ -41,41 +41,62 @@
   </div>
 </template>
 
-<script setup>
-import { computed, ref, watch } from "vue";
+<script setup lang="ts">
+import IColumnConfig from "@/interfaces/gridView/IColumnConfig";
+import { computed, PropType, ref, watch } from "vue";
 
 const internalText = ref("");
-const internalValue = defineModel();
+const internalValue: any = defineModel();
 internalValue.value = [];
 const props = defineProps({
-  data: Array,
-  columns: Array,
-  valueField: String,
-  displayField: String,
+  data: Array as PropType<any[]>,
+  columns: Array as PropType<Array<IColumnConfig>>,
+  valueField: { type: String, default: "" },
+  displayField: { type: String, default: "" },
+  multiple: {
+    type: Boolean,
+    default: false,
+  },
 });
+const emit = defineEmits(["selected"]);
 const filterData = computed(() => {
-  if (internalValue.value) {
+  if (Array.isArray(internalValue.value) && props.data) {
     return props.data.filter((item) => {
       return !internalValue.value.some(
-        (value) => value[props.valueField] === item[props.valueField]
+        (value: any) =>
+          value[props.valueField as keyof typeof value] ===
+          item[props.valueField as keyof typeof value]
       );
     });
   }
   return props.data;
 });
-const chooseValue = (item) => {
+const chooseValue = (item: any) => {
   //check if the item is already selected, if not, push to the model
-  if (internalValue.value && !internalValue.value.includes(item[props.valueField])) {
-    internalValue.value.push({
-      [props.valueField]: item[props.valueField],
-      [props.displayField]: item[props.displayField],
-    });
+  if (
+    internalValue.value &&
+    !internalValue.value.includes(item[props.valueField as keyof typeof item])
+  ) {
+    if (props.multiple) {
+      internalValue.value.push({
+        [props.valueField]: item[props.valueField],
+        [props.displayField]: item[props.displayField],
+      });
+    } else {
+      internalValue.value = [
+        {
+          [props.valueField]: item[props.valueField],
+          [props.displayField]: item[props.displayField],
+        },
+      ];
+    }
     internalText.value = "";
+    emit("selected", item);
   }
 };
-const removeChoice = (item) => {
+const removeChoice = (item: any) => {
   internalValue.value = internalValue.value.filter(
-    (value) => value[props.valueField] !== item[props.valueField]
+    (value: any) => value[props.valueField] !== item[props.valueField]
   );
 };
 </script>

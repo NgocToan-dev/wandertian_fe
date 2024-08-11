@@ -60,6 +60,18 @@ const adminRouter = [
             component: () =>
               import("@/pages/admin/task/views/ganttChart/GanttChart.vue"),
           },
+          {
+            name: "TaskKanbanView",
+            path: "kanban",
+            component: () =>
+              import("@/pages/admin/task/views/kanban/TaskKanban.vue"),
+          },
+          {
+            name: "TaskTreeView",
+            path: "tree",
+            component: () =>
+              import("@/pages/admin/task/views/tree/TaskTree.vue"),
+          },
         ],
       },
     ],

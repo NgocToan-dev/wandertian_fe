@@ -44,7 +44,7 @@ export default {
         enum: "TaskStatus",
         width: 200,
       },
-      { dataField: "rowAction", width: 120 },
+      { dataField: "rowAction" },
     ];
 
     const addTask = () => {

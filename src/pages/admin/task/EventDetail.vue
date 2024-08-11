@@ -126,6 +126,24 @@
               ></textarea>
             </div>
           </div>
+          <!-- Parent task -->
+          <div class="row align-items-center">
+            <div class="d-flex col-3">
+              <div class="icon">
+                <i class="fa-solid fa-folder"></i>
+              </div>
+              <div class="text-left">Parent Task</div>
+            </div>
+            <div class="col-9">
+              <Combobox
+                @selected="onSelectParentTask"
+                :data="items"
+                :columns="taskColumns"
+                valueField="_id"
+                displayField="title"
+              />
+            </div>
+          </div>
         </div>
         <hr />
         <div class="d-flex flex-column gap-3">
@@ -189,7 +207,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, getCurrentInstance, onMounted, Ref, ref } from "vue";
 import baseModal from "@/pages/base/baseModal";
 import { useTaskStore } from "@/store/business/taskStore";
 
@@ -197,11 +215,31 @@ export default defineComponent({
   name: "CategoryDetail",
   extends: baseModal,
   setup() {
+    const { proxy } = getCurrentInstance() as any;
     const module: string = "event";
     const store = useTaskStore();
+    const items: Ref<Array<any>> = ref([]);
+    onMounted(async () => {
+      const res: any[] = await store.load();
+      if (Array.isArray(res)) {
+        items.value = res.filter((item) => item._id !== proxy.model._id);
+      }
+    });
+    const onSelectParentTask = (item: any) => {
+      proxy.model.parentId = item._id;
+    };
+    const taskColumns = [
+      {
+        dataField: "title",
+        title: "Title",
+      },
+    ];
     return {
       module,
       store,
+      items,
+      taskColumns,
+      onSelectParentTask,
     };
   },
 });

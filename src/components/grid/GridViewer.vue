@@ -45,14 +45,14 @@
           >
             <div
               v-if="column.dataField == 'rowAction'"
-              class="rowAction d-flex gap-1 justify-content-center"
+              class="rowAction d-flex gap-2 justify-content-center"
             >
-              <button class="btn btn-primary btn-sm" @click="editRow(row)">
+              <div class="text-primary" @click="editRow(row)">
                 <i class="fas fa-edit"></i>
-              </button>
-              <button class="btn btn-danger btn-sm" @click="deleteRow(row)">
+              </div>
+              <div class="text-danger" @click="deleteRow(row)">
                 <i class="fas fa-trash"></i>
-              </button>
+              </div>
             </div>
             <div
               v-else-if="column.enum"
@@ -148,7 +148,14 @@ const setFormatType = (value: any, dataType: any, enumValue?: any) => {
       // vietnamese date time format
       return new Date(value).toLocaleString("vi-VN");
     case ColumnType.Enum:
-      return commonFn.getEnumValue(enumValue, value);
+      const res = commonFn.getEnumValue(enumValue, value);
+      if (!res) {
+        return {
+          bg: "",
+          color: "",
+        };
+      }
+      return res;
     default:
       return value;
   }
@@ -179,6 +186,9 @@ const deleteRow = (row: any) => {
   width: 20px;
 }
 
+.rowAction div {
+  cursor: pointer;
+}
 th {
   white-space: nowrap;
 }

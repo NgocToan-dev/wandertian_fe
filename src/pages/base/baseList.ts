@@ -12,7 +12,7 @@ export default defineComponent({
       formInline: false, // FormDetail is inline or Popup
     };
   },
-  async mounted() {
+  async created() {
     const me: any = this;
     await me.initData();
   },

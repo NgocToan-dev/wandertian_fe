@@ -138,13 +138,36 @@ const timeFromNow = (createdDate) => {
   }
 };
 
-const getEnumValue = (key, value) => {
+const getEnumValue = (key: string, value: any) => {
   if (Resources.hasOwnProperty(key)) {
     const position = Object.keys(Resources[key]).find((k) => k == value);
     if (position) {
       return Resources[key][position];
     }
   }
+};
+
+const convertFlatListDataToListTree = (data: Array<any>) => {
+  const result: any = [];
+  const map = new Map();
+  // Add children to each item
+  data.forEach((item: any) => {
+    item.children = [];
+  });
+  data.forEach((item: any) => {
+    map.set(item._id, { ...item, children: [] });
+  });
+  data.forEach((item: any) => {
+    if (item.parentId) {
+      const tempItem = map.get(item.parentId);
+      if (tempItem && tempItem.hasOwnProperty("children")) {
+        tempItem.children.push(map.get(item._id));
+      }
+    } else {
+      result.push(map.get(item._id));
+    }
+  });
+  return result;
 };
 export default {
   backToHome,
@@ -155,4 +178,5 @@ export default {
   setCookie,
   timeFromNow,
   getEnumValue,
+  convertFlatListDataToListTree
 };
