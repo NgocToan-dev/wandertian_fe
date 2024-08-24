@@ -12,7 +12,6 @@ export default defineComponent({
   },
   mounted() {
     const me: any = this;
-    debugger
     me.model = { ...me.$attrs.params.model };
     me.mode = me.$attrs.params.mode;
     me.refresh = me.$attrs.params.refresh;

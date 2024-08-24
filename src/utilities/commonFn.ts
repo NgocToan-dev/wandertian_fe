@@ -169,6 +169,42 @@ const convertFlatListDataToListTree = (data: Array<any>) => {
   });
   return result;
 };
+/**
+ * Chuyển đổi dữ liệu bảng thành dữ liệu kanban
+ * @param tableData
+ * pntoan 24-8-2024
+ */
+const convertTableToKanban = (
+  tableData: Array<any>,
+  groupType: string,
+  enumType: string
+) => {
+  const columns: Array<any> = [];
+  tableData.forEach((task: any) => {
+    if (task.status == undefined || task.status == null) {
+      task.statusName = "Not Status";
+    } else {
+      // Nếu là enum thì lấy giá trị enum
+      if (groupType === "enum" && enumType) {
+        task.statusName = getEnumValue(enumType, task.status).value;
+      } else {
+        task.statusName = task.status;
+      }
+    }
+    const column = columns.find((col) => col.title === task.statusName);
+    // Tìm xem có cột đó chưa, nếu có thì push vào cột đó, không thì tạo cột mới
+    if (column) {
+      column.tasks.push(task);
+    } else {
+      columns.push({
+        title: task.statusName,
+        groupValue: task.status,
+        tasks: [task],
+      });
+    }
+  });
+  return columns;
+};
 export default {
   backToHome,
   logout,
@@ -178,5 +214,6 @@ export default {
   setCookie,
   timeFromNow,
   getEnumValue,
-  convertFlatListDataToListTree
+  convertFlatListDataToListTree,
+  convertTableToKanban,
 };
