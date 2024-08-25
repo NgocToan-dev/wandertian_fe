@@ -1,10 +1,19 @@
+import { defineAsyncComponent } from "vue";
 // src/globalComponents.js
-import Card from "@/components/card/Card.vue";
-import Chip from "@/components/chip/Chip.vue";
-import RichEditor from "@/components/richEditor/RichEditor.vue";
-import Combobox from "@/components/combobox/Combobox.vue";
-import DynamicModal from "@/components/modal/DynamicModal.vue";
-import BaseInput from "./components/input/BaseInput.vue";
+const Combobox = defineAsyncComponent(
+  () => import("@/components/combobox/Combobox.vue")
+);
+const Card = defineAsyncComponent(() => import("@/components/card/Card.vue"));
+const Chip = defineAsyncComponent(() => import("@/components/chip/Chip.vue"));
+const RichEditor = defineAsyncComponent(
+  () => import("@/components/richEditor/RichEditor.vue")
+);
+const DynamicModal = defineAsyncComponent(
+  () => import("@/components/modal/DynamicModal.vue")
+);
+const BaseInput = defineAsyncComponent(
+  () => import("@/components/input/BaseInput.vue")
+);
 
 export default {
   install(app) {

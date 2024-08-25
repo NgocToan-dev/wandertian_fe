@@ -25,7 +25,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="row in rows" :key="row._id">
+        <tr v-for="row in _data" :key="row._id">
           <td v-if="multiple" class="col-checkbox">
             <div class="form-check">
               <input
@@ -91,8 +91,9 @@
 <script setup lang="ts">
 import commonFn from "@/utilities/commonFn";
 import ColumnType from "@/utilities/enum/ColumnType";
-import { computed, PropType } from "vue";
+import { computed, onMounted, PropType, ref } from "vue";
 import IColumnConfig from "@/interfaces/gridView/IColumnConfig";
+import ISort from "@/interfaces/gridView/ISort";
 
 const props = defineProps({
   rows: { type: Array as PropType<Array<any>>, required: true },
@@ -101,11 +102,57 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  defaultSort: {
+    type: Array as PropType<Array<ISort>>,
+    default: [{ dataField: "", order: "" }],
+  },
 });
+/**
+ * Sorts the rows of the grid based on the default sort rules.
+ *
+ * @returns {Array} The sorted rows.
+ */
+const _data = computed(() => {
+  // multiple sortable columns, so I need to sort by each column at the same time
+  // If the first column is equal, then sort by the second column, and so on
+  // Else keep the first order that is matched
+  props.rows.sort((a, b) => {
+    for (let rule of props.defaultSort) {
+      const { dataField, order } = rule;
+      const direction = order === "asc" ? 1 : -1;
+      const a_jsonValue = JSON.stringify(a[dataField]) || "";
+      const b_jsonValue = JSON.stringify(b[dataField]) || "";
+      if (a_jsonValue > b_jsonValue) return direction;
+      if (a_jsonValue < b_jsonValue) return -direction;
+    }
+    return 0; // If all values are equal, keep the original order
+  });
+  return props.rows;
+});
+onMounted(() => {
+  props.columns.forEach((column) => {
+    if (column.sortable) {
+      setSort(column);
+      sortIcon(column);
+    }
+  });
+});
+const setSort = (column: IColumnConfig) => {
+  column.sort = props.defaultSort.find((sort) => sort.dataField === column.dataField);
+};
+const sortIcon = (column: IColumnConfig) => {
+  if (column.sort) {
+    if (column.sort.order === "asc") {
+      column.sortIcon = "fas fa-sort-up";
+    } else {
+      column.sortIcon = "fas fa-sort-down";
+    }
+  }
+};
 const emit = defineEmits(["editRow", "deleteRow"]);
 const checkedAll = computed(() => {
-  if (Array.isArray(props.rows)) {
-    return props.rows.every((row) => row.selected);
+  if (Array.isArray(_data.value)) {
+    return _data.value.every((row) => row.selected);
   }
   return false;
 });
@@ -164,8 +211,8 @@ const selectRow = (row: any) => {
   row.selected = !row.selected;
 };
 const selectRowAll = (event: Event) => {
-  if (props.rows) {
-    props.rows.forEach((row) => {
+  if (_data.value) {
+    _data.value.forEach((row) => {
       const target = event.target as HTMLInputElement;
       row.selected = target.checked;
     });

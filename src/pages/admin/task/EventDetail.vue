@@ -3,7 +3,7 @@
     :title="title"
     @before-open="beforeOpen"
     @before-close="beforeClose"
-    width="600"
+    width="750"
   >
     <template #modal__content>
       <div class="form-group my-2">
@@ -28,8 +28,8 @@
               </div>
               <div class="text-left">Type</div>
             </div>
-            <div class="col-9 row flex-nowrap">
-              <div class="col">
+            <div class="col-9 d-flex flex-nowrap gap-3">
+              <div class="flex-grow-1">
                 <input
                   type="radio"
                   class="btn-check"
@@ -46,7 +46,7 @@
                   Events
                 </label>
               </div>
-              <div class="col">
+              <div class="flex-grow-1">
                 <input
                   type="radio"
                   class="btn-check"
@@ -63,7 +63,7 @@
                   Meet</label
                 >
               </div>
-              <div class="col">
+              <div class="flex-grow-1">
                 <input
                   type="radio"
                   class="btn-check"
@@ -82,16 +82,25 @@
               </div>
             </div>
           </div>
-          <!-- Date -->
+          <!-- Priority -->
           <div class="row align-items-center">
             <div class="d-flex col-3">
               <div class="icon">
-                <i class="fa-solid fa-calendar-days"></i>
+                <i class="fa-solid fa-droplet"></i>
               </div>
-              <div class="text-left">Start Date</div>
+              <div class="text-left">Priority</div>
             </div>
-            <div class="col-9 d-flex gap-2">
-              <base-input type="datetime-local" v-model="model.startDate" />
+            <div class="col-9">
+              <Combobox
+                enum="TaskPriority"
+                valueField="value"
+                displayField="text"
+                v-model="model.priority"
+              >
+                <template #item-icon="{ item }">
+                  <i class="fa-solid fa-folder" :style="{ color: getBgColor(item) }"></i>
+                </template>
+              </Combobox>
             </div>
           </div>
           <!-- Time -->
@@ -100,12 +109,38 @@
               <div class="icon">
                 <i class="fa-solid fa-calendar-days"></i>
               </div>
-              <div class="text-left">End Date</div>
+              <div class="text-left">Time</div>
             </div>
-            <div class="col-9 d-flex gap-3 align-items-center">
-              <div class="col-9 d-flex gap-2">
-                <base-input type="datetime-local" v-model="model.endDate" />
+            <div class="col-9 d-flex gap-3">
+              <base-input
+                class="flex-grow-1"
+                type="datetime-local"
+                v-model="model.startDate"
+              />
+              <base-input
+                class="flex-grow-1"
+                type="datetime-local"
+                v-model="model.endDate"
+              />
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div class="row align-items-center">
+            <div class="d-flex col-3">
+              <div class="icon">
+                <i class="fa-solid fa-check"></i>
               </div>
+              <div class="text-left">Status</div>
+            </div>
+            <div class="col-9">
+              <Combobox
+                enum="TaskStatus"
+                valueField="value"
+                displayField="text"
+                v-model="model.status"
+              >
+              </Combobox>
             </div>
           </div>
           <!-- Note -->
@@ -136,12 +171,13 @@
             </div>
             <div class="col-9">
               <Combobox
-                @selected="onSelectParentTask"
                 :data="items"
                 :columns="taskColumns"
                 valueField="_id"
                 displayField="title"
-              />
+                v-model="model.parentId"
+              >
+              </Combobox>
             </div>
           </div>
         </div>
@@ -171,18 +207,6 @@
               <base-input type="text" v-model="model.location" />
             </div>
           </div>
-          <!-- Colors -->
-          <div class="row align-items-center">
-            <div class="d-flex col-3">
-              <div class="icon">
-                <i class="fa-solid fa-droplet"></i>
-              </div>
-              <div class="text-left">Color</div>
-            </div>
-            <div class="col-9">
-              <base-input type="color" :width="100" v-model="model.color" />
-            </div>
-          </div>
         </div>
       </div>
     </template>
@@ -210,6 +234,8 @@
 import { defineComponent, getCurrentInstance, onMounted, Ref, ref } from "vue";
 import baseModal from "@/pages/base/baseModal";
 import { useTaskStore } from "@/store/business/taskStore";
+import Combobox from "@/components/combobox/Combobox.vue";
+import commonFn from "@/utilities/commonFn";
 
 export default defineComponent({
   name: "CategoryDetail",
@@ -225,21 +251,21 @@ export default defineComponent({
         items.value = res.filter((item) => item._id !== proxy.model._id);
       }
     });
-    const onSelectParentTask = (item: any) => {
-      proxy.model.parentId = item._id;
-    };
     const taskColumns = [
       {
         dataField: "title",
         title: "Title",
       },
     ];
+    const getBgColor = (item: any) => {
+      return commonFn.getEnumValue("TaskPriority", item.value).bg || "black";
+    };
     return {
       module,
       store,
       items,
       taskColumns,
-      onSelectParentTask,
+      getBgColor,
     };
   },
 });

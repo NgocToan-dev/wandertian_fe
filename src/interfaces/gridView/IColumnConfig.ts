@@ -1,3 +1,5 @@
+import ISort from "./ISort";
+
 export default interface IColumnConfig {
   dataField: string;
   title?: string;
@@ -7,4 +9,6 @@ export default interface IColumnConfig {
   sortable?: boolean;
   filterable?: boolean;
   enum?: string;
+  sort?: ISort;
+  sortIcon?: string;
 }

@@ -9,5 +9,10 @@ export default {
     Events: 0,
     Meet: 1,
     Task: 2,
-  }
+  },
+  TaskPriority: {
+    High: 0,
+    Low: 1,
+    Medium: 2,
+  },
 };
