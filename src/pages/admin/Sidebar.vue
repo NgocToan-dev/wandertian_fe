@@ -3,8 +3,12 @@
   <div class="sidebar bg-dark py-2">
     <h4 @click="backToHome" class="cursor-pointer text-center mb-4">Wandertian</h4>
     <div class="d-flex flex-column">
-      <router-link :to="{ path: item.path }" class="text-white item py-2 ps-3 d-flex align-items-center"
-        v-for="(item, index) in items" :class="{ active: activePath.includes(item.path) }">
+      <router-link
+        :to="{ path: item.path }"
+        class="text-white item py-2 ps-3 d-flex align-items-center"
+        v-for="(item, index) in items"
+        :class="{ active: activePath.includes(item.path) }"
+      >
         <!-- icon -->
         <i :class="[item.icon, 'me-2']"></i>
         {{ item.name }}
@@ -13,10 +17,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import commonFn from "@/utilities/commonFn";
 import { computed, getCurrentInstance } from "vue";
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as any;
 const activePath = computed(() => proxy.$route.path);
 
 const backToHome = () => {
@@ -24,7 +28,7 @@ const backToHome = () => {
 };
 
 // List item
-const items = [
+const items: Array<any> = [
   {
     name: "Post",
     path: "/admin/post",

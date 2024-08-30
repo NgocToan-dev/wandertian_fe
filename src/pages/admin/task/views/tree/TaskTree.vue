@@ -35,6 +35,7 @@ export default defineComponent({
     );
     onMounted(async () => {
       const res = await store.load();
+      debugger
       if (Array.isArray(res)) {
         listData.value = commonFn.convertFlatListDataToListTree(res);
       }

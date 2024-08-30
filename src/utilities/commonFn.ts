@@ -1,26 +1,31 @@
 import Enum from "./enum/Enum";
 import Resources from "./enum/Resources";
 
-const backToHome = (router) => {
+const backToHome = (router: any) => {
   router.push({ path: "/" });
 };
 
-const logout = (router) => {
-  // clear localstorage
-  // clear sessionstorage
-  // redirect to login page
+const logout = (router: any): void => {
+  // Clear local storage
   localStorage.clear();
+
+  // Clear session storage
   sessionStorage.clear();
-  // clear all cookies
+
+  // Clear all cookies
   const cookies = document.cookie.split(";");
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i];
-    const eqPos = cookie.indexOf("=");
-    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+  for (const cookie of cookies) {
+    const [name] = cookie.split("=").map((c) => c.trim());
+    if (name) {
+      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+    }
   }
 
+  // Redirect to login page
   router.push({ path: "/login" });
+
+  // Optional: Dispatch an event to notify other parts of the application
+  window.dispatchEvent(new Event("userLoggedOut"));
 };
 
 const isLogin = () => {
@@ -51,7 +56,7 @@ const checkAuth = () => {
  * @param {string} key - The name of the cookie.
  * @returns {string} The value of the cookie.
  */
-const getCookie = (key) => {
+const getCookie = (key: string) => {
   const name = `${key}=`;
   const decodedCookie = decodeURIComponent(document.cookie);
   const ca = decodedCookie.split(";");
@@ -77,7 +82,7 @@ const getCookie = (key) => {
  * @param {string} cookie - The cookie string.
  * @returns {string} The expiration date of the cookie.
  */
-const getCookieExpiration = (cookie) => {
+const getCookieExpiration = (cookie: string) => {
   const cookieParts = cookie.split(";");
   for (let i = 0; i < cookieParts.length; i++) {
     const part = cookieParts[i].trim();
@@ -94,7 +99,7 @@ const getCookieExpiration = (cookie) => {
  * @param {string} value - The value of the cookie.
  * @param {number} days - The number of days until the cookie expires.
  */
-const setCookie = (name, value, days) => {
+const setCookie = (name: string, value: string, days: number) => {
   let expires = "";
   if (days) {
     const date = new Date();
@@ -104,7 +109,7 @@ const setCookie = (name, value, days) => {
   document.cookie = `${name}=${encodeURIComponent(value)};${expires};path=/`;
 };
 
-const timeFromNow = (createdDate) => {
+const timeFromNow = (createdDate: Date) => {
   // Parse the createdDate into a Date object
   const createdDateObj = new Date(createdDate);
 
@@ -112,7 +117,7 @@ const timeFromNow = (createdDate) => {
   const now = new Date();
 
   // Calculate the difference in milliseconds
-  const differenceInMilliseconds = now - createdDateObj;
+  const differenceInMilliseconds = now.getTime() - createdDateObj.getTime();
 
   // Convert milliseconds to a more readable format
   const seconds = Math.floor(differenceInMilliseconds / 1000);
@@ -139,10 +144,12 @@ const timeFromNow = (createdDate) => {
 };
 
 const getEnumValue = (key: string, value: any) => {
-  if (Resources.hasOwnProperty(key)) {
-    const position = Object.keys(Resources[key]).find((k) => k == value);
+  if (key in Resources) {
+    const enumObj = Resources[key as keyof typeof Resources] as any;
+    const position = Object.keys(enumObj).find((k: any) => k == value);
+
     if (position) {
-      return Resources[key][position];
+      return enumObj[position as keyof typeof enumObj];
     }
   }
 };
@@ -160,7 +167,7 @@ const convertFlatListDataToListTree = (data: Array<any>) => {
   data.forEach((item: any) => {
     if (item.parentId) {
       const tempItem = map.get(item.parentId);
-      if (tempItem && tempItem.hasOwnProperty("children")) {
+      if (tempItem && Array.isArray(tempItem.children)) {
         tempItem.children.push(map.get(item._id));
       }
     } else {
